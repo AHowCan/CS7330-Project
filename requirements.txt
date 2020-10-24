@@ -1,0 +1,13 @@
+# python version 3.8
+# MongoDB version 4.4 Community Edition
+#
+# for pip:
+# cd $this directory$
+# pip install -r requirements.txt
+#
+# for anaconda:
+# cd $this directory$
+# conda activate $some env$
+# conda install --file requirements.txt
+
+pymongo
