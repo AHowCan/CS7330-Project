@@ -33,7 +33,7 @@
   - TBD
 - github creation and setup
   - Austin
-- NoSQL interface
+- MongoDB interface
   - critical, 2-3 ppl
   - All
 - input error detection
