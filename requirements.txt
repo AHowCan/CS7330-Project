@@ -9,5 +9,8 @@
 # cd $this directory$
 # conda activate $some env$
 # conda install --file requirements.txt
+#
+# 
 
 pymongo
+dnspython
