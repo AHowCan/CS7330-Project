@@ -2,3 +2,10 @@
 /.vscode
 
 *.pyc
+
+
+# Office temp files
+~$*.doc*
+~$*.xls*
+~$*.ppt*
+*.~vsd*
