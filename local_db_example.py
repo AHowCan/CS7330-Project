@@ -1,5 +1,5 @@
 import pymongo
-from config import *
+from config import LOCAL_URI
 
 myclient = pymongo.MongoClient(LOCAL_URI)
 mydb = myclient["mydatabase"]

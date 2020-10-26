@@ -1,5 +1,5 @@
 import pymongo
-from config import *
+from config import DB_NAME, TEST_DB_URI, COL_DRIVERS, COL_ROUTES
 
 ServerSelectionTimeoutError = pymongo.errors.ServerSelectionTimeoutError
 
