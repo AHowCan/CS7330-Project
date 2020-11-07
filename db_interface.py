@@ -1,5 +1,4 @@
 import pymongo
-from pprint import pprint
 
 from config import DB_NAME, TEST_DB_URI, COL_DRIVERS, COL_ROUTES
 from connect import Connect
