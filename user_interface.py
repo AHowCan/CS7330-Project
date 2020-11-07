@@ -1,8 +1,15 @@
 import csv
 from pprint import pprint
 
-def begin_UI():
+"""
+TODO: 
+- Need to add file name validation, create directory for input_data
+- call db_interface to input data into db :: pending db_interface.
+- Input validation and testing
 
+"""
+
+def begin_UI():
     while(True):
         print("\n\tWelcome to the Bus Network System\n\n" \
                         "Please make one of the following selections, 1 or 2.\n" \
@@ -125,17 +132,11 @@ def exit_ui():
     return 0 
 
 def get_input_and_validation(additional_input = []):
-    response = input(">")
-    # while response != "1" and response != "2" and response != "back" and response != "quit":
-    #     print("Unknown response...\n" \
-    #             "Try again")
-    #     response = input(">")
-    # return response 
-
     checks = ["1", "2", "back", "quit"]
     for check in additional_input:
         checks.append(check)
 
+    response = input(">")
     while(True):
         for valid in checks:
             if response == valid:
