@@ -130,9 +130,9 @@ def prompt_add_data():
 
 
 def global_response_check(response):
-    if response == help:
+    if response == "help":
         print_help()
-    elif response == quit:
+    elif response == "quit":
         exit_ui()
 
 
