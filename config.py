@@ -9,15 +9,16 @@ DB_NAME = 'bus_network'
 COL_DRIVERS = 'drivers'
 COL_ROUTES = 'routes'
 
-CANVAS_DATA_PATH = 'data_canvas'
-CUSTOM_DATA_PATH = 'data_custom'
+CANVAS_DATA_PATH = 'data_canvas/'
+CUSTOM_DATA_PATH = 'data_custom/'
 
 # easily switch between canvas and custom data
 DATA_PATH_TO_USE = CUSTOM_DATA_PATH
 
-ASSIGNMENT_FILE = DATA_PATH_TO_USE + '/Assignment.csv'
-DRIVER_FILE = DATA_PATH_TO_USE + '/Driver.csv'
-ROUTES_FILE = DATA_PATH_TO_USE + '/Routes.csv'
+ASSIGNMENT_FILE = 'Assignment.csv'
+DRIVER_FILE = 'Driver.csv'
+ROUTES_FILE = 'Routes.csv'
+
 
 if USE_LOCAL_CONFIG:
     from local_config import *
