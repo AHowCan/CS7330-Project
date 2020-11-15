@@ -1,9 +1,16 @@
 import csv
 from pprint import pprint
 import sys
+from config import (CANVAS_DATA_PATH,
+                    CUSTOM_DATA_PATH,
+                    ASSIGNMENT_FILE,
+                    DRIVER_FILE,
+                    ROUTES_FILE
+                    )
+
 
 """
-TODO: 
+TODO:
 - Need to add file name validation, create directory for input_data
 - call db_interface to input data into db :: pending db_interface.
 - Input validation and testing
@@ -38,12 +45,12 @@ def begin_UI():
 
 
 def read_csv(file_name, file_type):
-    with open(file_name) as csv_file:
+    with open(file_name, encoding='utf-8') as csv_file:
         read_csv = csv.reader(csv_file, delimiter=',')
         if file_type == "driver":
             return parse_driver(read_csv)
-        elif file_type == "route":
-            return parse_route(read_csv)
+        elif file_type == "routes":
+            return parse_routes(read_csv)
         elif file_type == "assignment":
             return parse_assignment(read_csv)
         else:
@@ -79,8 +86,8 @@ def print_help():
           "1) Add data\n"
           "2) Query database\n"
           "3) Database summary\n"
-          "4) [dev] Load data_canvas\n"
-          "5) [dev] Load data_custom\n"
+          "4) [dev] Load data_canvas to database\n"
+          "5) [dev] Load data_custom to database\n"
           "6) [dev] Wipe database\n"
           "\n"
           "At any time type\n"
@@ -92,7 +99,7 @@ def print_help():
 
 def prompt_add_data():
     while(True):
-        print("Would you like to add a driver or route?\n"
+        print("Would you like to add a driver or routes?\n"
               "1) Drivers\n"
               "2) Routes\n"
               "3) Driver Assignments")
@@ -113,8 +120,8 @@ def prompt_add_data():
             file_name = input(">")
             global_response_check(file_name)
             if file_name != "back":
-                route_list = read_csv(file_name, "route")
-                pprint(route_list)
+                routes_list = read_csv(file_name, "routes")
+                pprint(routes_list)
 
         elif response == "3":
             print("Please enter file name for driver assignments.")
@@ -149,43 +156,60 @@ def summary():
 
 
 def load_data_canvas():
-    print('not implemented')
+    load_data_from_folder(CANVAS_DATA_PATH)
 
 
 def load_data_custom():
-    print('not implemented')
+    load_data_from_folder(CUSTOM_DATA_PATH)
+
+
+def load_data_from_folder(folder):
+    '''files in folder must match 
+    ASSIGNMENT_FILE
+    DRIVER_FILE
+    ROUTES_FILE
+    in config.py
+    '''
+    driver_list = read_csv(folder + DRIVER_FILE, "driver")
+    pprint(driver_list)
+
+    assignment_list = read_csv(folder + ASSIGNMENT_FILE, "assignment")
+    pprint(driver_list)
+
+    routes_list = read_csv(folder + ROUTES_FILE, "routes")
+    pprint(driver_list)
 
 
 def wipe_database():
     print('not implemented')
 
 
-def parse_route(read_csv):
-    route_list = []
+def parse_routes(read_csv):
+    routes_list = []
     for row in read_csv:
-        route = {}
-        if len(row) == 9:  # Used if route name is given
-            route["number"] = row[0]
-            route["name"] = row[1]
-            route["departure_city_name"] = row[2]
-            route["departure_city_code"] = row[3]
-            route["destination_city_name"] = row[4]
-            route["destination_city_code"] = row[5]
-            route["route_type_code"] = row[6]
-            route["travel_time_hours"] = row[7]
-            route["travel_time_minutes"] = row[8]
-        elif len(row) == 8:  # No route name given
-            route["number"] = row[0]
-            route["name"] = ""
-            route["departure_city_name"] = row[1]
-            route["departure_city_code"] = row[2]
-            route["destination_city_name"] = row[3]
-            route["destination_city_code"] = row[4]
-            route["route_type_code"] = row[5]
-            route["travel_time_hours"] = row[6]
-            route["travel_time_minutes"] = row[7]
-        route_list.append(route)
-    return route_list
+        routes = {}
+        if len(row) == 9:  # Used if routes name is given
+            routes["number"] = row[0]
+            routes["name"] = row[1]
+            routes["departure_city_name"] = row[2]
+            routes["departure_city_code"] = row[3]
+            routes["destination_city_name"] = row[4]
+            routes["destination_city_code"] = row[5]
+            routes["route_type_code"] = row[6]
+            routes["travel_time_hours"] = row[7]
+            routes["travel_time_minutes"] = row[8]
+        elif len(row) == 8:  # No routes name given
+            routes["number"] = row[0]
+            routes["name"] = ""
+            routes["departure_city_name"] = row[1]
+            routes["departure_city_code"] = row[2]
+            routes["destination_city_name"] = row[3]
+            routes["destination_city_code"] = row[4]
+            routes["route_type_code"] = row[5]
+            routes["travel_time_hours"] = row[6]
+            routes["travel_time_minutes"] = row[7]
+        routes_list.append(routes)
+    return routes_list
 
 
 def parse_driver(read_csv):

@@ -8,6 +8,6 @@ CLOUD_URI = 'mongodb+srv://user:password@cluster0.0qxsh.mongodb.net/bus_network?
 
 LOCAL_URI = 'mongodb://localhost:27017/'
 
-DB_URI = CLOUD_URI
+DB_URI = LOCAL_URI
 # for a local db uncomment the next line
 #DB_URI = LOCAL_URI
