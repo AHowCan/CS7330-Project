@@ -19,6 +19,5 @@ ASSIGNMENT_FILE = 'Assignment.csv'
 DRIVER_FILE = 'Driver.csv'
 ROUTES_FILE = 'Routes.csv'
 
-
 if USE_LOCAL_CONFIG:
     from local_config import *

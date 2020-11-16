@@ -1,7 +1,13 @@
 import pymongo
 
-from config import DB_NAME, TEST_DB_URI, COL_DRIVERS, COL_ROUTES
+from config import DB_NAME, TEST_DB_URI, COL_DRIVERS, COL_ROUTES, DB_URI
 from connect import Connect
+
+# generally never use globals, except in class projects
+CLIENT = Connect.get_connection()
+DB = CLIENT[DB_NAME]
+DRIVERS_COLLECTION = DB[COL_DRIVERS]
+ROUTES_COLLECTION = DB[COL_ROUTES]
 
 
 def get_client_connection():
@@ -14,11 +20,11 @@ def add_assignment(assignment):
 
 
 def add_driver(driver):
-    print("not implemented")
+    DRIVERS_COLLECTION.insert_one(driver)
 
 
 def add_route(route):
-    print("not implemented")
+    ROUTES_COLLECTION.insert_one(route)
 
 
 def wipe_database():
