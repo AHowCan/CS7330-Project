@@ -28,7 +28,8 @@ def add_route(route):
 
 
 def wipe_database():
-    print("not implemented")
+    DRIVERS_COLLECTION.remove()
+    ROUTES_COLLECTION.remove()
 # mydb = client[DB_NAME]
 # drivers_col = mydb[COL_DRIVERS]
 # cursor = drivers_col.find({})

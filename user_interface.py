@@ -192,7 +192,7 @@ def parse_routes(read_csv):
     for row in read_csv:
         routes = {}
         if len(row) == 9:  # Used if routes name is given
-            routes["number"] = row[0]
+            routes["_id"] = row[0]
             routes["name"] = row[1]
             routes["departure_city_name"] = row[2]
             routes["departure_city_code"] = row[3]
@@ -202,7 +202,7 @@ def parse_routes(read_csv):
             routes["travel_time_hours"] = row[7]
             routes["travel_time_minutes"] = row[8]
         elif len(row) == 8:  # No routes name given
-            routes["number"] = row[0]
+            routes["_id"] = row[0]
             routes["name"] = ""
             routes["departure_city_name"] = row[1]
             routes["departure_city_code"] = row[2]
@@ -219,7 +219,7 @@ def parse_driver(read_csv):
     driver_list = []
     for row in read_csv:
         driver = {}
-        driver["id"] = row[0]
+        driver["_id"] = row[0]
         driver["last_name"] = row[1]
         driver["first_name"] = row[2]
         driver["age"] = row[3]
