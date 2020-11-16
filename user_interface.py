@@ -1,6 +1,8 @@
 import csv
 from pprint import pprint
 import sys
+import data_pipeline
+import db_interface
 from config import (CANVAS_DATA_PATH,
                     CUSTOM_DATA_PATH,
                     ASSIGNMENT_FILE,
@@ -171,17 +173,18 @@ def load_data_from_folder(folder):
     in config.py
     '''
     driver_list = read_csv(folder + DRIVER_FILE, "driver")
-    pprint(driver_list)
-
-    assignment_list = read_csv(folder + ASSIGNMENT_FILE, "assignment")
-    pprint(driver_list)
+    data_pipeline.add_drivers(driver_list)
 
     routes_list = read_csv(folder + ROUTES_FILE, "routes")
-    pprint(driver_list)
+    data_pipeline.add_routes(routes_list)
+
+    # assignments need to be added last since they need the above data
+    assignment_list = read_csv(folder + ASSIGNMENT_FILE, "assignment")
+    data_pipeline.add_assignments(assignment_list)
 
 
 def wipe_database():
-    print('not implemented')
+    db_interface.wipe_database()
 
 
 def parse_routes(read_csv):
