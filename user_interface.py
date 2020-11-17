@@ -191,7 +191,7 @@ def parse_routes(read_csv):
     routes_list = []
     for row in read_csv:
         routes = {}
-        if len(row) == 9:  # Used if routes name is given
+        if len(row) == 11:
             routes["_id"] = row[0]
             routes["name"] = row[1]
             routes["departure_city_name"] = row[2]
@@ -199,18 +199,12 @@ def parse_routes(read_csv):
             routes["destination_city_name"] = row[4]
             routes["destination_city_code"] = row[5]
             routes["route_type_code"] = row[6]
-            routes["travel_time_hours"] = row[7]
-            routes["travel_time_minutes"] = row[8]
-        elif len(row) == 8:  # No routes name given
-            routes["_id"] = row[0]
-            routes["name"] = ""
-            routes["departure_city_name"] = row[1]
-            routes["departure_city_code"] = row[2]
-            routes["destination_city_name"] = row[3]
-            routes["destination_city_code"] = row[4]
-            routes["route_type_code"] = row[5]
-            routes["travel_time_hours"] = row[6]
-            routes["travel_time_minutes"] = row[7]
+            routes["departure_time_hours"] = row[7]
+            routes["departure_time_minutes"] = row[8]
+            routes["travel_time_hours"] = row[9]
+            routes["travel_time_minutes"] = row[10]
+        else:
+            return -1
         routes_list.append(routes)
     return routes_list
 

@@ -47,17 +47,17 @@ def add_route(route):
 
 def _check_assignment_conflicts(assignment):
     '''returns False for no conflicts'''
-    print("not implemented")
+    #print("not implemented")
     return False
 
 
 def _check_driver_id_conflict(driver):
     '''returns False for no conflicts'''
-    print("not implemented")
+    #print("not implemented")
     return False
 
 
 def _check_route_id_conflict(route):
     '''returns False for no conflicts'''
-    print("not implemented")
+    #print("not implemented")
     return False

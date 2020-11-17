@@ -18,7 +18,8 @@ Database bus_network:
     destination_city: string (unique by state)
     destination_state: string, 2 letters
     type_id: int ( 0, 1, or 2)
-    travel_hours: int
-    travel_minutes: int
     departure_hour: int
     departure_minutes: int
+    travel_hours: int
+    travel_minutes: int
+

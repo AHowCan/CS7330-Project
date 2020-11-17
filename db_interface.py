@@ -16,7 +16,11 @@ def get_client_connection():
 
 
 def add_assignment(assignment):
-    print("not implemented")
+    driver_id = assignment['driver_id']
+    a = assignment.copy()
+    del a['driver_id']
+    DRIVERS_COLLECTION.update(
+        {'_id': driver_id}, {'$push': {'assignments': a}})
 
 
 def add_driver(driver):
