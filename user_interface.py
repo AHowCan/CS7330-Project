@@ -1,6 +1,7 @@
 import csv
 from pprint import pprint
 import sys
+from os import path
 import data_pipeline
 import db_interface
 from config import (CANVAS_DATA_PATH,
@@ -13,7 +14,6 @@ from config import (CANVAS_DATA_PATH,
 
 """
 TODO:
-- Need to add file name validation, create directory for input_data
 - call db_interface to input data into db :: pending db_interface.
 - Input validation and testing
 
@@ -113,22 +113,34 @@ def prompt_add_data():
             print("Please enter file name for drivers.")
             file_name = input(">")
             global_response_check(file_name)
+            while(not path.exists(file_name) and file_name != "back"):
+                print("File not found.\nPlease enter file name for drivers.")
+                file_name = input(">")
+                global_response_check(file_name)
             if file_name != "back":
                 driver_list = read_csv(file_name, "driver")
-                pprint(driver_list)
+                data_pipeline.add_drivers(driver_list)
 
         elif response == "2":
             print("Please enter file name for routes.")
             file_name = input(">")
             global_response_check(file_name)
+            while(not path.exists(file_name) and file_name != "back"):
+                print("File not found.\nPlease enter file name for routes.")
+                file_name = input(">")
+                global_response_check(file_name)
             if file_name != "back":
                 routes_list = read_csv(file_name, "routes")
-                pprint(routes_list)
+                data_pipeline.add_routes(routes_list)
 
         elif response == "3":
             print("Please enter file name for driver assignments.")
             file_name = input(">")
             global_response_check(file_name)
+            while(not path.exists(file_name) and file_name != "back"):
+                print("File not found.\nPlease enter file name for driver assignments.")
+                file_name = input(">")
+                global_response_check(file_name)
             if file_name != "back":
                 assignment_list = read_csv(file_name, "assignment")
                 pprint(assignment_list)
@@ -147,9 +159,7 @@ def global_response_check(response):
 
 def prompt_query():
     while(True):
-        print("What would you like to query?")
-
-        print("--- BACKING OUT ---")
+        print('not implemented')
         break
 
 
