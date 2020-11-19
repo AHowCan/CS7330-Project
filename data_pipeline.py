@@ -53,11 +53,9 @@ def _check_assignment_conflicts(assignment):
 
 def _check_driver_id_conflict(driver):
     '''returns False for no conflicts'''
-    #print("not implemented")
-    return False
+    return db_interface.find_one(driver, "drivers")
 
 
 def _check_route_id_conflict(route):
     '''returns False for no conflicts'''
-    #print("not implemented")
-    return False
+    return db_interface.find_one(route, "routes")
