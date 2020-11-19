@@ -11,15 +11,6 @@ from config import (CANVAS_DATA_PATH,
                     ROUTES_FILE
                     )
 
-
-"""
-TODO:
-- call db_interface to input data into db :: pending db_interface.
-- Input validation and testing
-
-"""
-
-
 def begin_UI():
     print_help()
     while(True):
@@ -143,7 +134,7 @@ def prompt_add_data():
                 global_response_check(file_name)
             if file_name != "back":
                 assignment_list = read_csv(file_name, "assignment")
-                pprint(assignment_list)
+                data_pipeline.add_assignments(assignment_list)
 
         elif response == "back":
             print_help()
@@ -165,6 +156,7 @@ def prompt_query():
 
 def summary():
     print('not implemented')
+    print()
 
 
 def load_data_canvas():

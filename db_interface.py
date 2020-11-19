@@ -30,21 +30,26 @@ def add_driver(driver):
 def add_route(route):
     ROUTES_COLLECTION.insert_one(route)
 
+
 def find_one(query, db_collection):
-    if db_collection == "drivers":
-        if DRIVERS_COLLECTION.find_one(query['_id'],{"_id" : 1}) != None:
+    if db_collection == 'drivers':
+        if DRIVERS_COLLECTION.find_one(query,{'_id' : 1}) != None:
             return True
-    elif db_collection == "routes":
-        if ROUTES_COLLECTION.find_one(query['_id'],{"_id" : 1}) != None:
+    elif db_collection == 'routes':
+        if ROUTES_COLLECTION.find_one(query,{'_id' : 1}) != None:
             return True
     return False
+
+
+def get_driver_assignments(driver_id):
+    driver = DRIVERS_COLLECTION.find_one(driver_id)
+    if 'assignments' in driver.keys():
+        return driver['assignments']
+    else:
+        return None
+
 
 def wipe_database():
     DRIVERS_COLLECTION.remove()
     ROUTES_COLLECTION.remove()
-# mydb = client[DB_NAME]
-# drivers_col = mydb[COL_DRIVERS]
-# cursor = drivers_col.find({})
 
-# for driver in cursor:
-#      pprint(driver)

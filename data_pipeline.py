@@ -25,10 +25,13 @@ def add_routes(routes):
 
 
 def add_assignment(assignment):
-    if _check_assignment_conflicts(assignment):
-        print("assignment conflict")
+    if db_interface.find_one(assignment['driver_id'], 'drivers'):
+        if _check_assignment_conflicts(assignment):
+            print("assignment conflict")
+        else:
+            db_interface.add_assignment(assignment)
     else:
-        db_interface.add_assignment(assignment)
+        print("Driver not found for assignment -%s\n" % assignment)
 
 
 def add_driver(driver):
@@ -47,15 +50,23 @@ def add_route(route):
 
 def _check_assignment_conflicts(assignment):
     '''returns False for no conflicts'''
-    #print("not implemented")
+    driver_assignments = db_interface.get_driver_assignments(assignment['driver_id'])
+    if driver_assignments != None:
+        for driver_assignment in driver_assignments:
+            if driver_assignment['day_of_week'] == assignment['day_of_week']:
+                if driver_assignment['route_number'] != assignment['route_number']:
+                    return True
+                else:
+                    print("Duplicate assignment for driver")
+                    return True
     return False
 
 
 def _check_driver_id_conflict(driver):
     '''returns False for no conflicts'''
-    return db_interface.find_one(driver, "drivers")
+    return db_interface.find_one(driver['_id'], 'drivers')
 
 
 def _check_route_id_conflict(route):
     '''returns False for no conflicts'''
-    return db_interface.find_one(route, "routes")
+    return db_interface.find_one(route['_id'], 'routes')
