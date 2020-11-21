@@ -92,53 +92,38 @@ def print_help():
 
 def prompt_add_data():
     while(True):
-        print("Would you like to add a driver or routes?\n"
-              "1) Drivers\n"
-              "2) Routes\n"
-              "3) Driver Assignments")
-        response = get_input_and_validation(["3"])
+        check_files_existence = True
+        while(check_files_existence):
+            print("Provide the set of file names.\nExample "
+                    ">driver.csv,routes.csv,assignments.csv")
+            response = input(">")
+            global_response_check(response)
+            if response == "back":
+                print_help()
+                return 0
 
-        global_response_check(response)
+            data_set = response.split(',')
+            if path.exists(data_set[0]):
+                if path.exists(data_set[1]):
+                    if path.exists(data_set[2]):
+                        check_files_existence = False
+                    else:
+                        pass
+                        print("Unable to find \"" + data_set[2] + "\"")
+                else:
+                    print("Unable to find \"" + data_set[1] + "\"")
+            else:
+                print("Unable to find \"" + data_set[0] + "\"")
 
-        if response == "1":
-            print("Please enter file name for drivers.")
-            file_name = input(">")
-            global_response_check(file_name)
-            while(not path.exists(file_name) and file_name != "back"):
-                print("File not found.\nPlease enter file name for drivers.")
-                file_name = input(">")
-                global_response_check(file_name)
-            if file_name != "back":
-                driver_list = read_csv(file_name, "driver")
-                data_pipeline.add_drivers(driver_list)
+        driver_list = read_csv(data_set[0], "driver")
+        data_pipeline.add_drivers(driver_list)
+        routes_list = read_csv(data_set[1], "routes")
+        data_pipeline.add_routes(routes_list)
+        assignment_list = read_csv(data_set[2], "assignment")
+        data_pipeline.add_assignments(assignment_list)
 
-        elif response == "2":
-            print("Please enter file name for routes.")
-            file_name = input(">")
-            global_response_check(file_name)
-            while(not path.exists(file_name) and file_name != "back"):
-                print("File not found.\nPlease enter file name for routes.")
-                file_name = input(">")
-                global_response_check(file_name)
-            if file_name != "back":
-                routes_list = read_csv(file_name, "routes")
-                data_pipeline.add_routes(routes_list)
-
-        elif response == "3":
-            print("Please enter file name for driver assignments.")
-            file_name = input(">")
-            global_response_check(file_name)
-            while(not path.exists(file_name) and file_name != "back"):
-                print("File not found.\nPlease enter file name for driver assignments.")
-                file_name = input(">")
-                global_response_check(file_name)
-            if file_name != "back":
-                assignment_list = read_csv(file_name, "assignment")
-                data_pipeline.add_assignments(assignment_list)
-
-        elif response == "back":
-            print_help()
-            break
+        print_help()
+        return 0
 
 
 def global_response_check(response):
