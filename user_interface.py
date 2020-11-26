@@ -11,6 +11,7 @@ from config import (CANVAS_DATA_PATH,
                     ROUTES_FILE
                     )
 
+
 def begin_UI():
     print_help()
     while(True):
@@ -38,7 +39,7 @@ def begin_UI():
 
 
 def read_csv(file_name, file_type):
-    with open(file_name, encoding='utf-8') as csv_file:
+    with open(file_name, encoding='utf-8-sig') as csv_file:
         read_csv = csv.reader(csv_file, delimiter=',')
         if file_type == "driver":
             return parse_driver(read_csv)
@@ -95,7 +96,7 @@ def prompt_add_data():
         check_files_existence = True
         while(check_files_existence):
             print("Provide the set of file names.\nExample "
-                    ">driver.csv,routes.csv,assignments.csv")
+                  ">driver.csv,routes.csv,assignments.csv")
             response = input(">")
             global_response_check(response)
             if response == "back":

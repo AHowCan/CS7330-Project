@@ -27,7 +27,7 @@ def add_routes(routes):
 def add_assignment(assignment):
     if db_interface.find_one(assignment['driver_id'], 'drivers'):
         if _check_assignment_conflicts(assignment):
-            print("assignment conflict")
+            print("assignment conflict for: " + str(assignment))
         else:
             db_interface.add_assignment(assignment)
     else:
@@ -50,7 +50,8 @@ def add_route(route):
 
 def _check_assignment_conflicts(assignment):
     '''returns False for no conflicts'''
-    driver_assignments = db_interface.get_driver_assignments(assignment['driver_id'])
+    driver_assignments = db_interface.get_driver_assignments(
+        assignment['driver_id'])
     if driver_assignments != None:
         for driver_assignment in driver_assignments:
             if driver_assignment['day_of_week'] == assignment['day_of_week']:
