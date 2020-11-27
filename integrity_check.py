@@ -1,4 +1,5 @@
 import db_interface
+from config import DAY_OF_WEEK_VALUES
 
 
 def check_driver_conflicts(driver):
@@ -15,13 +16,18 @@ def check_assignment_conflicts(assignment):
         assignment['driver_id'])
     if driver_assignments != None:
         for driver_assignment in driver_assignments:
-            if driver_assignment['day_of_week'] == assignment['day_of_week']:
-                if driver_assignment['route_number'] != assignment['route_number']:
-                    return True
-                else:
-                    print("Duplicate assignment for driver")
-                    return True
+            if _check_assignment_time_overlap_conflict(
+                    driver_assignment, assignment):
+                return True
     return False
+
+
+def _return_day_number(day):
+    return DAY_OF_WEEK_VALUES[day]
+
+
+def _minute_of_week(day, hour, minute):
+    return (_return_day_number(str(day)) * 1440) + (int(hour) * 60) + int(minute)
 
 
 def _sort_driver_assignments(driver):
@@ -56,3 +62,36 @@ def _check_driver_id_conflict(driver):
 def _check_route_id_conflict(route):
     '''returns False for no conflicts'''
     return db_interface.find_one(route['_id'], 'routes')
+
+
+def _check_assignment_time_overlap_conflict(assignment1, assignment2):
+    '''returns False for no conflicts'''
+    route1 = db_interface.get_route(assignment1["route_number"])
+    route2 = db_interface.get_route(assignment2["route_number"])
+    assignment1_departure = _minute_of_week(
+        assignment1["day_of_week"],
+        route1["departure_time_hours"],
+        route1["departure_time_minutes"])
+    assignment1_arrival = assignment1_departure + _minute_of_week('M',
+                                                                  route1["travel_time_hours"],
+                                                                  route1["travel_time_minutes"])
+    assignment2_departure = _minute_of_week(
+        assignment2["day_of_week"],
+        route2["departure_time_hours"],
+        route2["departure_time_minutes"])
+    assignment2_arrival = assignment2_departure + _minute_of_week('M',
+                                                                  route2["travel_time_hours"],
+                                                                  route2["travel_time_minutes"])
+    if assignment1_departure < assignment2_departure:
+        if assignment1_arrival > assignment2_departure:
+            return True
+        if assignment2_arrival > 10080:
+            if (assignment2_arrival % 10080) > assignment1_departure:
+                return True
+    else:
+        if assignment2_arrival > assignment1_departure:
+            return True
+        if assignment1_arrival > 10080:
+            if (assignment1_arrival % 10080) > assignment2_departure:
+                return True
+    return False
