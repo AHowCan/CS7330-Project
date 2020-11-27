@@ -8,7 +8,7 @@
     - Driver does not have assignment to home town (Constraint 4)
     - Driver did not get enough rest at hometown (Constraint 4)
 
-[Austin] Constraint 1: A driver cannot be driving more than one bus that travel at the same time.(current implementation does not take travel time into consideration)
+DONE - [Austin] Constraint 1: A driver cannot be driving more than one bus that travel at the same time.(current implementation does not take travel time into consideration)
 
 [Tony] Constraint 2: A driver must be given enough rest (defined to be half the duration of his previous route before taking on the next assignment)
 

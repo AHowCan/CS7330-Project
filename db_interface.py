@@ -49,6 +49,16 @@ def get_driver_assignments(driver_id):
         return None
 
 
+def get_driver(driver_id):
+    driver = DRIVERS_COLLECTION.find_one(driver_id)
+    return driver
+
+
+def get_route(route_id):
+    route = ROUTES_COLLECTION.find_one(route_id)
+    return route
+
+
 def wipe_database():
     DRIVERS_COLLECTION.remove()
     ROUTES_COLLECTION.remove()
