@@ -1,4 +1,3 @@
-import csv
 from pprint import pprint
 import sys
 from os import path
@@ -29,27 +28,13 @@ def begin_UI():
             summary()
 
         elif response == "4":
-            load_data_canvas()
+            dev_load_data_canvas()
 
         elif response == "5":
-            load_data_custom()
+            dev_load_data_custom()
 
         elif response == "6":
             wipe_database()
-
-
-def read_csv(file_name, file_type):
-    with open(file_name, encoding='utf-8-sig') as csv_file:
-        read_csv = csv.reader(csv_file, delimiter=',')
-        if file_type == "driver":
-            return parse_driver(read_csv)
-        elif file_type == "routes":
-            return parse_routes(read_csv)
-        elif file_type == "assignment":
-            return parse_assignment(read_csv)
-        else:
-            print("Exception :: Unknown file type")
-            return -1
 
 
 def exit_ui():
@@ -103,26 +88,21 @@ def prompt_add_data():
                 print_help()
                 return 0
 
-            data_set = response.split(',')
-            if path.exists(data_set[0]):
-                if path.exists(data_set[1]):
-                    if path.exists(data_set[2]):
+            dataset_str = response.split(',')
+            if path.exists(dataset_str[0]):
+                if path.exists(dataset_str[1]):
+                    if path.exists(dataset_str[2]):
                         check_files_existence = False
                     else:
                         pass
-                        print("Unable to find \"" + data_set[2] + "\"")
+                        print("Unable to find \"" + dataset_str[2] + "\"")
                 else:
-                    print("Unable to find \"" + data_set[1] + "\"")
+                    print("Unable to find \"" + dataset_str[1] + "\"")
             else:
-                print("Unable to find \"" + data_set[0] + "\"")
-
-        driver_list = read_csv(data_set[0], "driver")
-        data_pipeline.add_drivers(driver_list)
-        routes_list = read_csv(data_set[1], "routes")
-        data_pipeline.add_routes(routes_list)
-        assignment_list = read_csv(data_set[2], "assignment")
-        data_pipeline.add_assignments(assignment_list)
-
+                print("Unable to find \"" + dataset_str[0] + "\"")
+        data_pipeline.load_drivers_to_database(dataset_str[0])
+        data_pipeline.load_routes_to_database(dataset_str[1])
+        data_pipeline.load_assignments_to_database(dataset_str[2])
         print_help()
         return 0
 
@@ -145,11 +125,11 @@ def summary():
     print()
 
 
-def load_data_canvas():
+def dev_load_data_canvas():
     load_data_from_folder(CANVAS_DATA_PATH)
 
 
-def load_data_custom():
+def dev_load_data_custom():
     load_data_from_folder(CUSTOM_DATA_PATH)
 
 
@@ -160,66 +140,14 @@ def load_data_from_folder(folder):
     ROUTES_FILE
     in config.py
     '''
-    driver_list = read_csv(folder + DRIVER_FILE, "driver")
-    data_pipeline.add_drivers(driver_list)
-
-    routes_list = read_csv(folder + ROUTES_FILE, "routes")
-    data_pipeline.add_routes(routes_list)
-
+    data_pipeline.load_drivers_to_database(folder + DRIVER_FILE)
+    data_pipeline.load_routes_to_database(folder + ROUTES_FILE)
     # assignments need to be added last since they need the above data
-    assignment_list = read_csv(folder + ASSIGNMENT_FILE, "assignment")
-    data_pipeline.add_assignments(assignment_list)
+    data_pipeline.load_assignments_to_database(folder + ASSIGNMENT_FILE)
 
 
 def wipe_database():
     db_interface.wipe_database()
-
-
-def parse_routes(read_csv):
-    routes_list = []
-    for row in read_csv:
-        routes = {}
-        if len(row) == 11:
-            routes["_id"] = row[0]
-            routes["name"] = row[1]
-            routes["departure_city_name"] = row[2]
-            routes["departure_city_code"] = row[3]
-            routes["destination_city_name"] = row[4]
-            routes["destination_city_code"] = row[5]
-            routes["route_type_code"] = row[6]
-            routes["departure_time_hours"] = row[7]
-            routes["departure_time_minutes"] = row[8]
-            routes["travel_time_hours"] = row[9]
-            routes["travel_time_minutes"] = row[10]
-        else:
-            return -1
-        routes_list.append(routes)
-    return routes_list
-
-
-def parse_driver(read_csv):
-    driver_list = []
-    for row in read_csv:
-        driver = {}
-        driver["_id"] = row[0]
-        driver["last_name"] = row[1]
-        driver["first_name"] = row[2]
-        driver["age"] = row[3]
-        driver["city"] = row[4]
-        driver["state"] = row[5]
-        driver_list.append(driver)
-    return driver_list
-
-
-def parse_assignment(read_csv):
-    assignment_list = []
-    for row in read_csv:
-        assignment = {}
-        assignment["driver_id"] = row[0]
-        assignment["route_number"] = row[1]
-        assignment["day_of_week"] = row[2]
-        assignment_list.append(assignment)
-    return assignment_list
 
 
 if __name__ == "__main__":

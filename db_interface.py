@@ -33,10 +33,10 @@ def add_route(route):
 
 def find_one(query, db_collection):
     if db_collection == 'drivers':
-        if DRIVERS_COLLECTION.find_one(query,{'_id' : 1}) != None:
+        if DRIVERS_COLLECTION.find_one(query, {'_id': 1}) != None:
             return True
     elif db_collection == 'routes':
-        if ROUTES_COLLECTION.find_one(query,{'_id' : 1}) != None:
+        if ROUTES_COLLECTION.find_one(query, {'_id': 1}) != None:
             return True
     return False
 
@@ -49,7 +49,27 @@ def get_driver_assignments(driver_id):
         return None
 
 
+def get_driver_info(driver_id):
+    driver = DRIVERS_COLLECTION.find_one(driver_id)
+    return driver
+
+
+def get_all_routes():
+    ''' note that find() returns a "cursor", which is lazy
+    so this is not actually storing the whole collection in memory'''
+    return ROUTES_COLLECTION.find()
+
+
+def get_all_drivers():
+    return DRIVERS_COLLECTION.find()
+
+
+def get_all_driver_ids():
+    ids = DRIVERS_COLLECTION.find({}, {'_id': 1})
+    ids = [i['_id'] for i in ids]
+    return ids
+
+
 def wipe_database():
     DRIVERS_COLLECTION.remove()
     ROUTES_COLLECTION.remove()
-

@@ -19,5 +19,8 @@ ASSIGNMENT_FILE = 'Assignment.csv'
 DRIVER_FILE = 'Driver.csv'
 ROUTES_FILE = 'Routes.csv'
 
+# used for sorting assignment days
+DAY_OF_WEEK_VALUES = {'s': 0, 'M': 1, 'T': 2, 'W': 3, 'U': 4, 'F': 5, 'S': 6}
+
 if USE_LOCAL_CONFIG:
     from local_config import *

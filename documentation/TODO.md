@@ -7,6 +7,9 @@
     - Driver cannot reach next assignment in time (Constraint 3)
     - Driver does not have assignment to home town (Constraint 4)
     - Driver did not get enough rest at hometown (Constraint 4)
+    - Invalid characters / incorrect number of fields on a line.
+
+[Donald] Check for Invalid characters / incorrect number of fields.
 
 [Austin] Constraint 1: A driver cannot be driving more than one bus that travel at the same time.(current implementation does not take travel time into consideration)
 

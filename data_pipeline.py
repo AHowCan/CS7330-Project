@@ -7,6 +7,23 @@
 # finally data is sent to the db_interface
 
 import db_interface
+import integrity_check
+import input_parser
+
+
+def load_drivers_to_database(filepath):
+    driver_list = input_parser.read_csv(filepath, "driver")
+    add_drivers(driver_list)
+
+
+def load_routes_to_database(filepath):
+    driver_list = input_parser.read_csv(filepath, "routes")
+    add_routes(driver_list)
+
+
+def load_assignments_to_database(filepath):
+    driver_list = input_parser.read_csv(filepath, "assignment")
+    add_assignments(driver_list)
 
 
 def add_assignments(assignments):
@@ -26,7 +43,7 @@ def add_routes(routes):
 
 def add_assignment(assignment):
     if db_interface.find_one(assignment['driver_id'], 'drivers'):
-        if _check_assignment_conflicts(assignment):
+        if integrity_check.check_assignment_conflicts(assignment):
             print("assignment conflict for: " + str(assignment))
         else:
             db_interface.add_assignment(assignment)
@@ -35,39 +52,14 @@ def add_assignment(assignment):
 
 
 def add_driver(driver):
-    if _check_driver_id_conflict(driver):
+    if integrity_check.check_driver_conflicts(driver):
         print("driver id conflict")
     else:
         db_interface.add_driver(driver)
 
 
 def add_route(route):
-    if _check_route_id_conflict(route):
+    if integrity_check.check_route_conflicts(route):
         print("route id conflict")
     else:
         db_interface.add_route(route)
-
-
-def _check_assignment_conflicts(assignment):
-    '''returns False for no conflicts'''
-    driver_assignments = db_interface.get_driver_assignments(
-        assignment['driver_id'])
-    if driver_assignments != None:
-        for driver_assignment in driver_assignments:
-            if driver_assignment['day_of_week'] == assignment['day_of_week']:
-                if driver_assignment['route_number'] != assignment['route_number']:
-                    return True
-                else:
-                    print("Duplicate assignment for driver")
-                    return True
-    return False
-
-
-def _check_driver_id_conflict(driver):
-    '''returns False for no conflicts'''
-    return db_interface.find_one(driver['_id'], 'drivers')
-
-
-def _check_route_id_conflict(route):
-    '''returns False for no conflicts'''
-    return db_interface.find_one(route['_id'], 'routes')
