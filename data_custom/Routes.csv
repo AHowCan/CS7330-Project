@@ -1,4 +1,5 @@
-1, First Route, Garland, 789, Plano, 345, 0, 0, 30
-2, Second Route, Richardson, 555, Fort Worth, 333, 1, 1, 40
-3, Plano, 345, Garland, 789, 0, 0, 30
-4, Fort Worth, 333, Richardson, 555, 1, 1, 40
+1,Route_1,Dallas,TX,Houston,TX,0,7,0,5,15
+2,Route_2,Houston ,TX,Waco,TX,0,11,0,4,0
+A13,,Waco,TX,Dallas,TX,0,20,0,2,45
+4B7,Express,Dallas,TX,Houston,TX,1,15,30,4,30
+3,Route_3,Houston,TX,Dallas,TX,0,23,0,48,0
