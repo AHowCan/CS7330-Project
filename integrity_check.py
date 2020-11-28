@@ -32,6 +32,22 @@ def _minute_of_week(day, hour, minute):
 
 def _sort_driver_assignments(driver):
     '''Sorts assignments Sunday, Monday, Tuesday etc.'''
+    pass
+
+
+def _get_prev_assignment(assignment, driver):
+    '''Get the previous assignment according to departure datetime
+
+    note that _get_prev_assignment and _get_next_assignment 
+    will return the same assignment if there is only one other assignment
+    return None if no other assignments
+    '''
+    pass
+
+
+def _get_next_assignment(assignment, driver):
+    '''Get the next assignment according to departure datetime'''
+    pass
 
 
 def _check_c1(driver):
