@@ -16,6 +16,15 @@ def _is_route_type_code_valid(route_type):
     pass
 
 
+def name_separation_check(driver_name):
+    if "," in driver_name:
+        first_name = driver_name.split(',')[0]
+        last_name = driver_name.split(',')[1]
+        return first_name, last_name
+    else:
+        return -1
+
+
 def read_csv(file_name, file_type):
     with open(file_name, encoding='utf-8-sig') as csv_file:
         read_csv = csv.reader(csv_file, delimiter=',')
@@ -57,8 +66,8 @@ def parse_driver(read_csv):
     for row in read_csv:
         driver = {}
         driver['_id'] = row[0]
-        driver['last_name'] = row[1]
-        driver['first_name'] = row[2]
+        driver['first_name'] = row[1]
+        driver['last_name'] = row[2]
         driver['age'] = row[3]
         driver['city'] = row[4]
         driver['state'] = row[5]
@@ -75,3 +84,13 @@ def parse_assignment(read_csv):
         assignment['day_of_week'] = row[2]
         assignment_list.append(assignment)
     return assignment_list
+
+
+def sort_route_time(dict_list):
+    sorted_dict = {}
+    for dictonary in dict_list:
+        departure_time = (int(dictonary["departure_time_hours"]) * 60) + (
+                          int(dictonary["departure_time_minutes"]))
+        sorted_dict[dictonary["_id"]] = departure_time
+    sorted(sorted_dict.items(), key=lambda item: item[1])
+    return sorted_dict

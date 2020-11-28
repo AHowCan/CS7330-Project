@@ -63,3 +63,23 @@ def add_route(route):
         print('route id conflict - %s' % route['_id'])
     else:
         db_interface.add_route(route)
+
+
+def query_driver(driver_name):
+    driver_name = input_parser.name_separation_check(driver_name)
+    if driver_name != -1:
+        return db_interface.get_driver_name(driver_name)
+    else:
+        return -1
+
+
+def query_city(city_name):
+    sorted_routes = []
+    all_routes = db_interface.get_city_routes(city_name)
+    sorted_route_ids = input_parser.sort_route_time(all_routes)
+    for route_id in sorted_route_ids:
+        for route in all_routes:
+            if route['_id'] == route_id:
+                sorted_routes.append(route)
+                break
+    return sorted_routes

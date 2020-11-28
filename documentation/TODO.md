@@ -19,9 +19,10 @@ DONE - [Austin] Constraint 1: A driver cannot be driving more than one bus that 
 
 [Tony] Constraint 4: The driver should be assigned a route that reaches his/her hometown. Once the driver arrived at his hometown, he/she should be allowed at least 18 hours of rest before the next assignment. (If 18 hours is not enough rest based on condition 2, he/she need to be given more).
 
-[Austin] Query 1: The program should get the name of a driver (first and last), and print out the driver’s information, together with the route that the driver is assigned to. (If there is multiple drivers that satisfies the query, print them all (one after the other)).
+Done - [Austin] Query 1: The program should get the name of a driver (first and last), and print out the driver’s information, together with the route that the driver is assigned to. (If there is multiple drivers that satisfies the query, print them all (one after the other)).
 
-[Austin] Query 2 The program should get the name of a city, and print out all the routes that go through the city (separate departure and destination, order by time: assume Sunday 00:00 am is the starting time).
+Done - [Austin] Query 2 The program should get the name of a city, and print out all the routes that go through the city (separate departure and destination, order by time: assume Sunday 00:00 am is the starting time).
+    ASSUMPTION: He mentions oder by time and gives Sunday 00:00, but implementation is not  querying the days of driver assignments, only routes and their start time.  
 
 [Austin] Query 3 The program should get the route of a bus and print out all information about the route, including the name and ID of the driver that is assigned to it.
 

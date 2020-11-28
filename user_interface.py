@@ -116,8 +116,28 @@ def global_response_check(response):
 
 def prompt_query():
     while(True):
-        print('not implemented')
-        break
+        print("Please select from the following.\n"
+              "1) Query driver\n"
+              "2) Query city routes\n"
+              "3) Query route\n"
+              "4) Query route between cities")
+        response = input(">")
+        global_response_check(response)
+        if response == "back":
+            print_help()
+            return 0
+
+        if response == "1":
+            query_driver()
+
+        elif response == "2":
+            query_city()
+
+        elif response == "3":
+            query_route()
+
+        elif response == "4":
+            query_connection()
 
 
 def summary():
@@ -148,6 +168,34 @@ def load_data_from_folder(folder):
 
 def wipe_database():
     db_interface.wipe_database()
+
+def query_driver():
+    print("Provide the first and last name seperated by a comma.")
+    response = input(">")
+    results = data_pipeline.query_driver(response)
+    if results != -1 and results:
+        for result in results:
+            pprint(result)
+    elif not results:
+        print("Unable to find driver")
+    else:
+        print("Error in response")
+
+def query_city():
+    print("Provide the name of a city.")
+    response = input(">")
+    result = data_pipeline.query_city(response)
+    if result:
+        for route in result:
+            pprint(route)
+    elif not result:
+        print("No routes or city not found")
+
+def query_route():
+    pass
+
+def query_connection():
+    pass
 
 
 if __name__ == "__main__":

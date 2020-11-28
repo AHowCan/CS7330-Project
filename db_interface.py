@@ -3,6 +3,8 @@ import pymongo
 from config import DB_NAME, TEST_DB_URI, COL_DRIVERS, COL_ROUTES, DB_URI
 from connect import Connect
 
+from pprint import pprint
+
 # generally never use globals, except in class projects
 CLIENT = Connect.get_connection()
 DB = CLIENT[DB_NAME]
@@ -54,6 +56,16 @@ def get_driver(driver_id):
     return driver
 
 
+def get_driver_name(driver_name):
+    driver_list = []
+    drivers = DRIVERS_COLLECTION.find( 
+                                      { 'first_name' : driver_name[0] ,
+                                        'last_name' : driver_name[1]} )
+    for driver in drivers:
+            driver_list.append(driver)
+    return driver_list
+
+
 def get_all_routes():
     ''' note that find() returns a "cursor", which is lazy
     so this is not actually storing the whole collection in memory'''
@@ -74,6 +86,16 @@ def get_route(route_id):
     route = ROUTES_COLLECTION.find_one(route_id)
     return route
 
+
+def get_city_routes(city_name):
+    all_routes = []
+    routes = ROUTES_COLLECTION.find({'departure_city_name' : city_name})
+    for route in routes:
+        all_routes.append(route)
+    routes = ROUTES_COLLECTION.find({'destination_city_name' : city_name})
+    for route in routes:
+        all_routes.append(route)
+    return all_routes
 
 def wipe_database():
     DRIVERS_COLLECTION.remove()
