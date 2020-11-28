@@ -4,7 +4,8 @@ from config import (DAY_OF_WEEK_VALUES,
                     FIRST_DAY_OF_WEEK,
                     MINUTES_IN_WEEK,
                     ROUTE_TYPE_VALID_DAYS,
-                    REST_TIME_EPSILON)
+                    TIME_EPSILON,
+                    MINUTES_TO_SWITCH_CITIES)
 
 
 def check_driver_conflicts(driver):
@@ -160,7 +161,7 @@ class DriverConstraintCheck:
         self._sort_assignments()
 
     def check_all_constraints(self):
-        self._check_not_enough_rest()
+        self._pairwise_assignment_checks()
 
     def _get_unique_routes(self):
         unique_routes_numbers = set()
@@ -201,14 +202,26 @@ class DriverConstraintCheck:
             assignment1['arrival_minute']
         if loop:  # looped to the next week
             rest_time += MINUTES_IN_WEEK
-        return rest_time < (assignment1_duration / 2 - REST_TIME_EPSILON)
+        if rest_time >= (assignment1_duration / 2 - TIME_EPSILON):
+            return False
 
-    def _check_not_enough_rest(self):
+        print('ERROR: driver: {} not getting enough rest.'.format(
+            self.driver_ext['_id']))
+        print('  Assignment_1: ' +
+              str(self._clear_extended_info(assignment1)))
+        print('  Assignment_2: ' +
+              str(self._clear_extended_info(assignment2)))
+        return True
+
+    def _pairwise_assignment_checks(self):
         '''Constraint 2. Enough rest, at least half of prev route
+        Constraint 3. Can reach next assignment
         returns False for no conflict
         '''
         assignments = self.driver_ext['assignments']
         num_assignments = len(assignments)
+
+        # all pairwise constraints are met if there are only 1 or less assignments
         if num_assignments <= 1:
             return False
 
@@ -223,14 +236,33 @@ class DriverConstraintCheck:
             if i == num_assignments - 1:
                 loop = True
             if self._check_not_enough_rest_between_assignments(assignment1, assignment2, loop):
-                print('ERROR: driver: {} not getting enough rest.'.format(
-                    self.driver_ext['_id']))
-                print('  Assignment_1: ' +
-                      str(self._clear_extended_info(assignment1)))
-                print('  Assignment_2: ' +
-                      str(self._clear_extended_info(assignment2)))
+                any_errors = True
+            if self._check_cant_reach_next_assignment(assignment1, assignment2, loop):
                 any_errors = True
         return any_errors
+
+    def _check_cant_reach_next_assignment(self, assignment1, assignment2, loop):
+        '''assignment1 comes before assignment2
+        return False for no conflict'''
+        route1 = self.routes[assignment1['route_number']]
+        route2 = self.routes[assignment2['route_number']]
+        if (route1['destination_city_name'] == route2['departure_city_name']) \
+                and (route1['destination_city_code'] == route2['departure_city_code']):
+            return False
+        time_between_assignments = assignment2['departure_minute'] - \
+            assignment1['arrival_minute']
+        if loop:
+            time_between_assignments += MINUTES_IN_WEEK
+        if time_between_assignments >= MINUTES_TO_SWITCH_CITIES - TIME_EPSILON:
+            return False
+
+        print('ERROR: Driver {} can\'t reach next assignment in time'.format(
+            self.driver_ext['_id']))
+        print('  Assignment_1: ' +
+              str(self._clear_extended_info(assignment1)))
+        print('  Assignment_2: ' +
+              str(self._clear_extended_info(assignment2)))
+        return True
 
 
 def final_constraint_check():

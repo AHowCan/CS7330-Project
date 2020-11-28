@@ -25,14 +25,16 @@ FIRST_DAY_OF_WEEK = 's'
 WEEKDAYS = ['M', 'T', 'W', 'U', 'F']
 WEEKENDS = ['S', 's']
 MINUTES_IN_WEEK = 7 * 24 * 60
+MINUTES_TO_SWITCH_CITIES = 48 * 60
 
 ROUTE_TYPE_VALID_DAYS = {'0': WEEKDAYS + WEEKENDS,
                          '1': WEEKDAYS,
                          '2': WEEKENDS
                          }
 
-# the larger this is, the less rest time drivers get (in minutes)
-REST_TIME_EPSILON = 0.1
+# tie breaker in case of exact time matches to avoid floating point inconsistencies
+# in case of exact time matches, assume no conflict
+TIME_EPSILON = 0.01
 
 if USE_LOCAL_CONFIG:
     from local_config import *

@@ -15,7 +15,7 @@ DONE - [Austin] Constraint 1: A driver cannot be driving more than one bus that 
 
 DONE - [Tony] Constraint 2: A driver must be given enough rest (defined to be half the duration of his previous route before taking on the next assignment)
 
-[Tony] Constraint 3: If the departure city of a driver’s next assignment is not the same as the destination of his current assignment. He/She can either take bus(es) from the company that will lead the driver to its next assignment (notice that connecting through multiple buses are allowed), or he/she has to be given 48 hours to reach the next assignment.
+PARTIAL-NEED BONUS 1 - [Tony] Constraint 3: If the departure city of a driver’s next assignment is not the same as the destination of his current assignment. He/She can either take bus(es) from the company that will lead the driver to its next assignment (notice that connecting through multiple buses are allowed), or he/she has to be given 48 hours to reach the next assignment.
 
 [Tony] Constraint 4: The driver should be assigned a route that reaches his/her hometown. Once the driver arrived at his hometown, he/she should be allowed at least 18 hours of rest before the next assignment. (If 18 hours is not enough rest based on condition 2, he/she need to be given more).
 
