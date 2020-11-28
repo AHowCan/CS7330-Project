@@ -13,7 +13,7 @@
 
 DONE - [Austin] Constraint 1: A driver cannot be driving more than one bus that travel at the same time.(current implementation does not take travel time into consideration)
 
-[Tony] Constraint 2: A driver must be given enough rest (defined to be half the duration of his previous route before taking on the next assignment)
+DONE - [Tony] Constraint 2: A driver must be given enough rest (defined to be half the duration of his previous route before taking on the next assignment)
 
 [Tony] Constraint 3: If the departure city of a driver’s next assignment is not the same as the destination of his current assignment. He/She can either take bus(es) from the company that will lead the driver to its next assignment (notice that connecting through multiple buses are allowed), or he/she has to be given 48 hours to reach the next assignment.
 

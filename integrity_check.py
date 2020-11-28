@@ -126,19 +126,24 @@ def _check_assignment_time_overlap_conflict(assignment1, assignment2):
     assignment1_arrival = _get_arrival_minute_of_week(assignment1, route1)
     assignment2_departure = _get_departure_minute_of_week(assignment2, route2)
     assignment2_arrival = _get_arrival_minute_of_week(assignment2, route2)
+    any_errors = False
     if assignment1_departure < assignment2_departure:
         if assignment1_arrival > assignment2_departure:
-            return True
+            any_errors = True
         if assignment2_arrival > MINUTES_IN_WEEK:
             if (assignment2_arrival % MINUTES_IN_WEEK) > assignment1_departure:
-                return True
+                any_errors = True
     else:
         if assignment2_arrival > assignment1_departure:
-            return True
+            any_errors = True
         if assignment1_arrival > MINUTES_IN_WEEK:
             if (assignment1_arrival % MINUTES_IN_WEEK) > assignment2_departure:
-                return True
-    return False
+                any_errors = True
+    if any_errors:
+        print('ERROR: assignments overlap')
+        print('  Assignment_1: ' + str(assignment1))
+        print('  Assignment_2: ' + str(assignment2))
+    return any_errors
 
 
 class DriverConstraintCheck:
@@ -148,12 +153,14 @@ class DriverConstraintCheck:
     def __init__(self, driver):
         # self.driver_ext is driver extended info
         self.driver_ext = driver.copy()
+        if 'assignments' not in self.driver_ext:
+            self.driver_ext['assignments'] = []
         self.routes = self._get_unique_routes()  # cache driver routes
         self._extend_assignments_with_minute_of_week()
         self._sort_assignments()
 
     def check_all_constraints(self):
-        print(self.driver_ext)
+        self._check_not_enough_rest()
 
     def _get_unique_routes(self):
         unique_routes_numbers = set()
@@ -213,9 +220,22 @@ class DriverConstraintCheck:
             assignment1 = assignments[assignments_idx[i]]
             assignment2 = assignments[assignments_idx[i+1]]
             loop = False
-            if i == len(num_assignments) - 1:
+            if i == num_assignments - 1:
                 loop = True
             if self._check_not_enough_rest_between_assignments(assignment1, assignment2, loop):
-                print("ERROR")
+                print('ERROR: driver: {} not getting enough rest.'.format(
+                    self.driver_ext['_id']))
+                print('  Assignment_1: ' +
+                      str(self._clear_extended_info(assignment1)))
+                print('  Assignment_2: ' +
+                      str(self._clear_extended_info(assignment2)))
                 any_errors = True
         return any_errors
+
+
+def final_constraint_check():
+    '''perform final constraint check
+    since some constraints require all data to be loaded to make sense'''
+    for driver in db_interface.get_all_drivers():
+        constraint_checker = DriverConstraintCheck(driver)
+        constraint_checker.check_all_constraints()

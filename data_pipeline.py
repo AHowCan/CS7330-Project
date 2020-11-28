@@ -25,11 +25,9 @@ def load_assignments_to_database(filepath):
     assignments_list = input_parser.read_csv(filepath, 'assignment')
     add_assignments(assignments_list)
 
-    # [delete me] test
-    driver = db_interface.get_driver('100A')
-    checker = integrity_check.DriverConstraintCheck(driver)
-    checker.check_all_constraints()
-    # end test
+
+def finalize():
+    integrity_check.final_constraint_check()
 
 
 def add_assignments(assignments):

@@ -103,6 +103,7 @@ def prompt_add_data():
         data_pipeline.load_drivers_to_database(dataset_str[0])
         data_pipeline.load_routes_to_database(dataset_str[1])
         data_pipeline.load_assignments_to_database(dataset_str[2])
+        data_pipeline.finalize()
         print_help()
         return 0
 
@@ -164,10 +165,12 @@ def load_data_from_folder(folder):
     data_pipeline.load_routes_to_database(folder + ROUTES_FILE)
     # assignments need to be added last since they need the above data
     data_pipeline.load_assignments_to_database(folder + ASSIGNMENT_FILE)
+    data_pipeline.finalize()
 
 
 def wipe_database():
     db_interface.wipe_database()
+
 
 def query_driver():
     print("Provide the first and last name seperated by a comma.")
@@ -181,6 +184,7 @@ def query_driver():
     else:
         print("Error in response")
 
+
 def query_city():
     print("Provide the name of a city.")
     response = input(">")
@@ -191,8 +195,10 @@ def query_city():
     elif not result:
         print("No routes or city not found")
 
+
 def query_route():
     pass
+
 
 def query_connection():
     pass
