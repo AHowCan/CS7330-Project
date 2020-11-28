@@ -12,17 +12,17 @@ import input_parser
 
 
 def load_drivers_to_database(filepath):
-    driver_list = input_parser.read_csv(filepath, "driver")
+    driver_list = input_parser.read_csv(filepath, 'driver')
     add_drivers(driver_list)
 
 
 def load_routes_to_database(filepath):
-    driver_list = input_parser.read_csv(filepath, "routes")
+    driver_list = input_parser.read_csv(filepath, 'routes')
     add_routes(driver_list)
 
 
 def load_assignments_to_database(filepath):
-    driver_list = input_parser.read_csv(filepath, "assignment")
+    driver_list = input_parser.read_csv(filepath, 'assignment')
     add_assignments(driver_list)
 
 
@@ -44,22 +44,22 @@ def add_routes(routes):
 def add_assignment(assignment):
     if db_interface.find_one(assignment['driver_id'], 'drivers'):
         if integrity_check.check_assignment_conflicts(assignment):
-            print("assignment conflict for: " + str(assignment))
+            pass  # detailed errors will be emitted in the conflict checks
         else:
             db_interface.add_assignment(assignment)
     else:
-        print("Driver not found for assignment -%s\n" % assignment)
+        print('Driver not found for assignment -%s\n' % assignment)
 
 
 def add_driver(driver):
     if integrity_check.check_driver_conflicts(driver):
-        print("driver id conflict - %s" % driver["_id"])
+        print('driver id conflict - %s' % driver['_id'])
     else:
         db_interface.add_driver(driver)
 
 
 def add_route(route):
     if integrity_check.check_route_conflicts(route):
-        print("route id conflict - %s" % route["_id"])
+        print('route id conflict - %s' % route['_id'])
     else:
         db_interface.add_route(route)

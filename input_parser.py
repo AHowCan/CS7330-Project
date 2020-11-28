@@ -19,14 +19,14 @@ def _is_route_type_code_valid(route_type):
 def read_csv(file_name, file_type):
     with open(file_name, encoding='utf-8-sig') as csv_file:
         read_csv = csv.reader(csv_file, delimiter=',')
-        if file_type == "driver":
+        if file_type == 'driver':
             return parse_driver(read_csv)
-        elif file_type == "routes":
+        elif file_type == 'routes':
             return parse_routes(read_csv)
-        elif file_type == "assignment":
+        elif file_type == 'assignment':
             return parse_assignment(read_csv)
         else:
-            print("Exception :: Unknown file type")
+            print('Exception :: Unknown file type')
             return -1
 
 
@@ -35,17 +35,17 @@ def parse_routes(read_csv):
     for row in read_csv:
         routes = {}
         if len(row) == 11:
-            routes["_id"] = row[0]
-            routes["name"] = row[1]
-            routes["departure_city_name"] = row[2]
-            routes["departure_city_code"] = row[3]
-            routes["destination_city_name"] = row[4]
-            routes["destination_city_code"] = row[5]
-            routes["route_type_code"] = row[6]
-            routes["departure_time_hours"] = row[7]
-            routes["departure_time_minutes"] = row[8]
-            routes["travel_time_hours"] = row[9]
-            routes["travel_time_minutes"] = row[10]
+            routes['_id'] = row[0]
+            routes['name'] = row[1]
+            routes['departure_city_name'] = row[2]
+            routes['departure_city_code'] = row[3]
+            routes['destination_city_name'] = row[4]
+            routes['destination_city_code'] = row[5]
+            routes['route_type_code'] = row[6]
+            routes['departure_time_hours'] = row[7]
+            routes['departure_time_minutes'] = row[8]
+            routes['travel_time_hours'] = row[9]
+            routes['travel_time_minutes'] = row[10]
         else:
             return -1
         routes_list.append(routes)
@@ -56,12 +56,12 @@ def parse_driver(read_csv):
     driver_list = []
     for row in read_csv:
         driver = {}
-        driver["_id"] = row[0]
-        driver["last_name"] = row[1]
-        driver["first_name"] = row[2]
-        driver["age"] = row[3]
-        driver["city"] = row[4]
-        driver["state"] = row[5]
+        driver['_id'] = row[0]
+        driver['last_name'] = row[1]
+        driver['first_name'] = row[2]
+        driver['age'] = row[3]
+        driver['city'] = row[4]
+        driver['state'] = row[5]
         driver_list.append(driver)
     return driver_list
 
@@ -70,8 +70,8 @@ def parse_assignment(read_csv):
     assignment_list = []
     for row in read_csv:
         assignment = {}
-        assignment["driver_id"] = row[0]
-        assignment["route_number"] = row[1]
-        assignment["day_of_week"] = row[2]
+        assignment['driver_id'] = row[0]
+        assignment['route_number'] = row[1]
+        assignment['day_of_week'] = row[2]
         assignment_list.append(assignment)
     return assignment_list

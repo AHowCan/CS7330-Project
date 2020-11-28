@@ -1,5 +1,7 @@
+
 import db_interface
-from config import DAY_OF_WEEK_VALUES
+from config import (DAY_OF_WEEK_VALUES,
+                    ROUTE_TYPE_VALID_DAYS)
 
 
 def check_driver_conflicts(driver):
@@ -12,6 +14,11 @@ def check_route_conflicts(route):
 
 def check_assignment_conflicts(assignment):
     '''returns False for no conflicts'''
+    if _check_assignment_route_missing(assignment):
+        return True
+    if _check_assignment_route_type_mismatch(assignment):
+        return True
+
     driver_assignments = db_interface.get_driver_assignments(
         assignment['driver_id'])
     if driver_assignments != None:
@@ -55,9 +62,35 @@ def _check_c1(driver):
     pass
 
 
-def _check_c2(driver):
+def _check_enough_rest(assignment1, assignment2):
     '''Constraint 2. Enough rest, at least half of prev route'''
     pass
+
+
+def _check_assignment_route_type_mismatch(assignment):
+    '''returns False for no conflict'''
+    route_number = assignment['route_number']
+    route = db_interface.get_route(route_number)
+    day = assignment['day_of_week']
+    route_type_code = route['route_type_code']
+    valid_days = ROUTE_TYPE_VALID_DAYS[route_type_code]
+
+    if day in valid_days:
+        return False
+    else:
+        print('ERROR, assignment day does not match route type: assignment: ' + str(assignment))
+        print('  Valid days for this route are: ' + str(valid_days))
+        return True
+
+
+def _check_assignment_route_missing(assignment):
+    '''returns False for no conflict'''
+    route_number = assignment['route_number']
+    route = db_interface.get_route(route_number)
+    if not route:
+        print('ERROR, route not found for assignment: ' + str(assignment))
+        return True
+    return False
 
 
 def _check_c3(driver):
@@ -82,22 +115,22 @@ def _check_route_id_conflict(route):
 
 def _check_assignment_time_overlap_conflict(assignment1, assignment2):
     '''returns False for no conflicts'''
-    route1 = db_interface.get_route(assignment1["route_number"])
-    route2 = db_interface.get_route(assignment2["route_number"])
+    route1 = db_interface.get_route(assignment1['route_number'])
+    route2 = db_interface.get_route(assignment2['route_number'])
     assignment1_departure = _minute_of_week(
-        assignment1["day_of_week"],
-        route1["departure_time_hours"],
-        route1["departure_time_minutes"])
+        assignment1['day_of_week'],
+        route1['departure_time_hours'],
+        route1['departure_time_minutes'])
     assignment1_arrival = assignment1_departure + _minute_of_week('M',
-                                                                  route1["travel_time_hours"],
-                                                                  route1["travel_time_minutes"])
+                                                                  route1['travel_time_hours'],
+                                                                  route1['travel_time_minutes'])
     assignment2_departure = _minute_of_week(
-        assignment2["day_of_week"],
-        route2["departure_time_hours"],
-        route2["departure_time_minutes"])
+        assignment2['day_of_week'],
+        route2['departure_time_hours'],
+        route2['departure_time_minutes'])
     assignment2_arrival = assignment2_departure + _minute_of_week('M',
-                                                                  route2["travel_time_hours"],
-                                                                  route2["travel_time_minutes"])
+                                                                  route2['travel_time_hours'],
+                                                                  route2['travel_time_minutes'])
     if assignment1_departure < assignment2_departure:
         if assignment1_arrival > assignment2_departure:
             return True

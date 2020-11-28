@@ -21,6 +21,14 @@ ROUTES_FILE = 'Routes.csv'
 
 # used for sorting assignment days
 DAY_OF_WEEK_VALUES = {'M': 0, 'T': 1, 'W': 2, 'U': 3, 'F': 4, 'S': 5, 's': 6}
+WEEKDAYS = ['M', 'T', 'W', 'U', 'F']
+WEEKENDS = ['S', 's']
+
+ROUTE_TYPE_VALID_DAYS = {'0': WEEKDAYS + WEEKENDS,
+                         '1': WEEKDAYS,
+                         '2': WEEKENDS
+                         }
+
 
 if USE_LOCAL_CONFIG:
     from local_config import *
