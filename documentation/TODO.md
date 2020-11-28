@@ -10,6 +10,23 @@
     - Invalid characters / incorrect number of fields on a line.
 
 [Donald] Check for Invalid characters / incorrect number of fields.
+reject line and emit error msg for the following:
+
+- wrong number of fields per line
+- only certain characters are allowed for day_of_week (see config.py)
+- only integers are allowed for departure / arrival times
+- route_type_code only accepts '0' '1' '2'
+- non-ascii characters
+
+auto-correct input for the following, but include a warning message along with what was done and what is expected:
+
+- First (and only first) letter of city should be capitalized
+- Same as above for driver names
+- State code should be capitalized
+- All letters in route IDs should be capitalized
+
+Special characters (ascii) are allowed for city/route/driver names. This should not be a problem since python will escape out special chars when needed and mongodb seems to support them, but include tests to verify this [!@#$%^&*()_-+=[]{};:'",<>./\|?~`].
+Non-ascii characters are not allowed, have tests for this.
 
 DONE - [Austin] Constraint 1: A driver cannot be driving more than one bus that travel at the same time.(current implementation does not take travel time into consideration)
 
