@@ -17,13 +17,19 @@ def load_drivers_to_database(filepath):
 
 
 def load_routes_to_database(filepath):
-    driver_list = input_parser.read_csv(filepath, 'routes')
-    add_routes(driver_list)
+    routes_list = input_parser.read_csv(filepath, 'routes')
+    add_routes(routes_list)
 
 
 def load_assignments_to_database(filepath):
-    driver_list = input_parser.read_csv(filepath, 'assignment')
-    add_assignments(driver_list)
+    assignments_list = input_parser.read_csv(filepath, 'assignment')
+    add_assignments(assignments_list)
+
+    # [delete me] test
+    driver = db_interface.get_driver('100A')
+    checker = integrity_check.DriverConstraintCheck(driver)
+    checker.check_all_constraints()
+    # end test
 
 
 def add_assignments(assignments):

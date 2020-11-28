@@ -31,6 +31,8 @@ ROUTE_TYPE_VALID_DAYS = {'0': WEEKDAYS + WEEKENDS,
                          '2': WEEKENDS
                          }
 
+# the larger this is, the less rest time drivers get (in minutes)
+REST_TIME_EPSILON = 0.1
 
 if USE_LOCAL_CONFIG:
     from local_config import *
