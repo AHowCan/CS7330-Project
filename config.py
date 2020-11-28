@@ -20,9 +20,11 @@ DRIVER_FILE = 'Driver.csv'
 ROUTES_FILE = 'Routes.csv'
 
 # used for sorting assignment days
-DAY_OF_WEEK_VALUES = {'M': 0, 'T': 1, 'W': 2, 'U': 3, 'F': 4, 'S': 5, 's': 6}
+DAY_OF_WEEK_VALUES = {'s': 0, 'M': 1, 'T': 2, 'W': 3, 'U': 4, 'F': 5, 'S': 6}
+FIRST_DAY_OF_WEEK = 's'
 WEEKDAYS = ['M', 'T', 'W', 'U', 'F']
 WEEKENDS = ['S', 's']
+MINUTES_IN_WEEK = 7 * 24 * 60
 
 ROUTE_TYPE_VALID_DAYS = {'0': WEEKDAYS + WEEKENDS,
                          '1': WEEKDAYS,

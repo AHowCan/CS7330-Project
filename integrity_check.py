@@ -1,6 +1,8 @@
 
 import db_interface
 from config import (DAY_OF_WEEK_VALUES,
+                    FIRST_DAY_OF_WEEK,
+                    MINUTES_IN_WEEK,
                     ROUTE_TYPE_VALID_DAYS)
 
 
@@ -38,7 +40,7 @@ def _minute_of_week(day, hour, minute):
 
 
 def _sort_driver_assignments(driver):
-    '''Sorts assignments Sunday, Monday, Tuesday etc.'''
+    '''Sorts assignments based on the minute of week the start'''
     pass
 
 
@@ -57,13 +59,10 @@ def _get_next_assignment(assignment, driver):
     pass
 
 
-def _check_c1(driver):
-    '''Constraint 1. Cannot drive 2 routes at the same time'''
-    pass
-
-
-def _check_enough_rest(assignment1, assignment2):
-    '''Constraint 2. Enough rest, at least half of prev route'''
+def _check_not_enough_rest(assignment1, assignment2):
+    '''Constraint 2. Enough rest, at least half of prev route
+    returns False for no conflict
+    '''
     pass
 
 
@@ -121,26 +120,26 @@ def _check_assignment_time_overlap_conflict(assignment1, assignment2):
         assignment1['day_of_week'],
         route1['departure_time_hours'],
         route1['departure_time_minutes'])
-    assignment1_arrival = assignment1_departure + _minute_of_week('M',
+    assignment1_arrival = assignment1_departure + _minute_of_week(FIRST_DAY_OF_WEEK,
                                                                   route1['travel_time_hours'],
                                                                   route1['travel_time_minutes'])
     assignment2_departure = _minute_of_week(
         assignment2['day_of_week'],
         route2['departure_time_hours'],
         route2['departure_time_minutes'])
-    assignment2_arrival = assignment2_departure + _minute_of_week('M',
+    assignment2_arrival = assignment2_departure + _minute_of_week(FIRST_DAY_OF_WEEK,
                                                                   route2['travel_time_hours'],
                                                                   route2['travel_time_minutes'])
     if assignment1_departure < assignment2_departure:
         if assignment1_arrival > assignment2_departure:
             return True
-        if assignment2_arrival > 10080:
-            if (assignment2_arrival % 10080) > assignment1_departure:
+        if assignment2_arrival > MINUTES_IN_WEEK:
+            if (assignment2_arrival % MINUTES_IN_WEEK) > assignment1_departure:
                 return True
     else:
         if assignment2_arrival > assignment1_departure:
             return True
-        if assignment1_arrival > 10080:
-            if (assignment1_arrival % 10080) > assignment2_departure:
+        if assignment1_arrival > MINUTES_IN_WEEK:
+            if (assignment1_arrival % MINUTES_IN_WEEK) > assignment2_departure:
                 return True
     return False
