@@ -36,16 +36,16 @@ PARTIAL-NEED BONUS 1 - [Tony] Constraint 3: If the departure city of a driver’
 
 DONE - [Tony] Constraint 4: The driver should be assigned a route that reaches his/her hometown. Once the driver arrived at his hometown, he/she should be allowed at least 18 hours of rest before the next assignment. (If 18 hours is not enough rest based on condition 2, he/she need to be given more).
 
-Done - [Austin] Query 1: The program should get the name of a driver (first and last), and print out the driver’s information, together with the route that the driver is assigned to. (If there is multiple drivers that satisfies the query, print them all (one after the other)).
+DONE - [Austin] Query 1: The program should get the name of a driver (first and last), and print out the driver’s information, together with the route that the driver is assigned to. (If there is multiple drivers that satisfies the query, print them all (one after the other)).
 
-Done - [Austin] Query 2 The program should get the name of a city, and print out all the routes that go through the city (separate departure and destination, order by time: assume Sunday 00:00 am is the starting time).
+DONE - [Austin] Query 2 The program should get the name of a city, and print out all the routes that go through the city (separate departure and destination, order by time: assume Sunday 00:00 am is the starting time).
     ASSUMPTION: He mentions oder by time and gives Sunday 00:00, but implementation is not  querying the days of driver assignments, only routes and their start time.  
 
 DONE - [Austin] Query 3 The program should get the route of a bus and print out all information about the route, including the name and ID of the driver that is assigned to it.
 
-[Austin] Query 4 The program should get the name of two cities, and response if there is a bus route that go from the first city directly to the second. If so, print all info about that route (as the previous query). If there is more than one, print them all (one after the other)
+DONE - [Austin] Query 4 The program should get the name of two cities, and response if there is a bus route that go from the first city directly to the second. If so, print all info about that route (as the previous query). If there is more than one, print them all (one after the other)
 
-[Tony] Bonus 1 Query 5 The program should get the name of two cities, and a day of the week (Sunday/Monday … etch.) and response if there is a way to get from the first city to the second, either by a single bus route, or by connecting buses, leaving on that day of the week. If connection is used, the total time from departure to arrival should be less than or equal to 72 hours. For each possible routes, list all the bus routes that is used. You should show departure and arrival time for the bus route. For example:
+[Austin] Bonus 1 Query 5 The program should get the name of two cities, and a day of the week (Sunday/Monday … etch.) and response if there is a way to get from the first city to the second, either by a single bus route, or by connecting buses, leaving on that day of the week. If connection is used, the total time from departure to arrival should be less than or equal to 72 hours. For each possible routes, list all the bus routes that is used. You should show departure and arrival time for the bus route. For example:
 Chicago, IL to Cleveland, OH
 Route 78 Chicago IL – Cleveland OH, leaving Monday 7:15am, arriving Monday 12:15pm
 Route 73 Chicago IL – Detroit MI, leaving Monday 8:15 am, arriving Monday 10:20 am

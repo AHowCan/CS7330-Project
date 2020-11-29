@@ -70,8 +70,8 @@ def add_route(route):
 
 
 def query_driver(driver_name):
-    driver_name = input_parser.name_separation_check(driver_name)
-    if driver_name != -1:
+    driver_name = input_parser.string_separation_check(driver_name)
+    if driver_name:
         return db_interface.get_driver_name(driver_name)
     else:
         return -1
@@ -103,3 +103,15 @@ def query_route(route_id):
                   'last_name':assignments['last_name']}
         assigned_drivers.append(driver)
     return route, assigned_drivers
+
+
+def query_connection(cities):
+    cities = input_parser.string_separation_check(cities)
+    if cities:
+        connections = db_interface.get_connection(cities[0], cities[1])
+        if connections:
+            return connections
+        else:
+            return 0
+    else:
+        return -1

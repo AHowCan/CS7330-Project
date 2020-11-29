@@ -215,19 +215,41 @@ def query_route():
     if result:
         pprint(result[0])
         if result[1] == -2:
-            print("Unable to find assignments for route.")
+            print("Unable to find assignments for route ID %s" % response)
         else:
             driver_assignments = result[1]
             for driver in driver_assignments:
                 pprint(driver)
     else:
-        print("Unable to find route ID")
-
-
+        print("Unable to find route ID %s" % response)
 
 
 def query_connection():
-    pass
+    print("Provide the names of the two cities, separated by a comma.")
+    response = input(">")
+    global_response_check(response)
+    if response == "back":
+        print_help()
+        return 0
+    result = data_pipeline.query_connection(response)
+    if result != -1 and result:
+        for connection in result:
+            result = data_pipeline.query_route(connection['_id'])
+            if result:
+                pprint(result[0])
+                if result[1] == -2:
+                    print(
+                          "Unable to find assignments for route %s" % connection['_id'])
+                else:
+                    driver_assignments = result[1]
+                    for driver in driver_assignments:
+                        pprint(driver)
+            else:
+                print("Unable to find route ID %s" % connection['_id'])
+    elif not result:
+        print("Unable to find connection for %s" % response)
+    else:
+        print("Error in response - %s" % response)
 
 
 if __name__ == "__main__":

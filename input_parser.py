@@ -16,13 +16,13 @@ def _is_route_type_code_valid(route_type):
     pass
 
 
-def name_separation_check(driver_name):
-    if "," in driver_name:
-        first_name = driver_name.split(',')[0]
-        last_name = driver_name.split(',')[1]
-        return first_name, last_name
+def string_separation_check(string_name):
+    if "," in string_name:
+        first_half = string_name.split(',')[0]
+        last_half = string_name.split(',')[1]
+        return first_half, last_half
     else:
-        return -1
+        return 0
 
 
 def read_csv(file_name, file_type):

@@ -87,6 +87,15 @@ def get_route(route_id):
     return route
 
 
+def get_connection(city1, city2):
+    all_connections = []
+    connections = ROUTES_COLLECTION.find({'departure_city_name' : city1,
+                                          'destination_city_name' : city2})
+    for connection in connections:
+        all_connections.append(connection)
+    return all_connections
+
+
 def get_route_assignments(route_id):
     route_assignments = []
     assignments = DRIVERS_COLLECTION.find(
