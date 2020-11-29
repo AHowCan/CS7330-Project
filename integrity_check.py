@@ -1,11 +1,12 @@
-
+import copy
 import db_interface
 from config import (DAY_OF_WEEK_VALUES,
                     FIRST_DAY_OF_WEEK,
                     MINUTES_IN_WEEK,
                     ROUTE_TYPE_VALID_DAYS,
                     TIME_EPSILON,
-                    MINUTES_TO_SWITCH_CITIES)
+                    MINUTES_TO_SWITCH_CITIES,
+                    HOMETOWN_REST_MINUTES)
 
 
 def check_driver_conflicts(driver):
@@ -41,26 +42,6 @@ def _minute_of_week(day, hour, minute):
     return (_return_day_number(str(day)) * 1440) + (int(hour) * 60) + int(minute)
 
 
-def _sort_driver_assignments(driver_ext):
-    '''Sorts assignments based on the minute of week at departure'''
-    pass
-
-
-def _get_prev_assignment(assignment, driver):
-    '''Get the previous assignment according to departure datetime
-
-    note that _get_prev_assignment and _get_next_assignment
-    will return the same assignment if there is only one other assignment
-    return None if no other assignments
-    '''
-    pass
-
-
-def _get_next_assignment(assignment, driver):
-    '''Get the next assignment according to departure datetime'''
-    pass
-
-
 def _check_assignment_route_type_mismatch(assignment):
     '''returns False for no conflict'''
     route_number = assignment['route_number']
@@ -85,16 +66,6 @@ def _check_assignment_route_missing(assignment):
         print('ERROR, route not found for assignment: ' + str(assignment))
         return True
     return False
-
-
-def _check_c3(driver):
-    '''Constraint 3. Enough time to reach next destination'''
-    pass
-
-
-def _check_c4(driver):
-    '''Constraint 4. Reaches hometown, with rest'''
-    pass
 
 
 def _check_driver_id_conflict(driver):
@@ -153,7 +124,8 @@ class DriverConstraintCheck:
 
     def __init__(self, driver):
         # self.driver_ext is driver extended info
-        self.driver_ext = driver.copy()
+        self.driver_ext = copy.deepcopy(driver)
+        self.driver_original = driver
         if 'assignments' not in self.driver_ext:
             self.driver_ext['assignments'] = []
         self.routes = self._get_unique_routes()  # cache driver routes
@@ -162,6 +134,7 @@ class DriverConstraintCheck:
 
     def check_all_constraints(self):
         self._pairwise_assignment_checks()
+        self._hometown_check()
 
     def _get_unique_routes(self):
         unique_routes_numbers = set()
@@ -262,6 +235,46 @@ class DriverConstraintCheck:
               str(self._clear_extended_info(assignment1)))
         print('  Assignment_2: ' +
               str(self._clear_extended_info(assignment2)))
+        return True
+
+    def _hometown_check(self):
+        '''since the instructions don't specify, 
+        assume that ONE 18 hour rest per week is enough
+        return False for no conflict'''
+        home_city = self.driver_ext['city']
+        home_state = self.driver_ext['state']
+        rest_requirement_met = False
+        reaches_home = False
+
+        assignments = self.driver_ext['assignments']
+        num_assignments = len(assignments)
+        assignments_idx = list(range(num_assignments))
+        # this is so that the indexing loop back to the first one for the last check
+        assignments_idx.append(0)
+
+        for i in range(num_assignments):
+            assignment1 = assignments[assignments_idx[i]]
+            assignment2 = assignments[assignments_idx[i+1]]
+            loop = False
+            if i == num_assignments - 1:
+                loop = True
+            route_before_rest = self.routes[assignment1['route_number']]
+            rest_city = route_before_rest['destination_city_name']
+            rest_state = route_before_rest['destination_city_code']
+            if home_city == rest_city and home_state == rest_state:
+                reaches_home = True
+                rest_minutes = assignment2['departure_minute'] - \
+                    assignment1['arrival_minute']
+                if rest_minutes >= HOMETOWN_REST_MINUTES - TIME_EPSILON:
+                    rest_requirement_met = True
+                    return False
+        if not reaches_home:
+            print('ERROR: Driver never reaches home city.')
+            print('  Driver:' + str(self.driver_original))
+        else:
+            print(
+                'ERROR: Driver reaches home city but does not get enough leave time.')
+            print('  Driver:' + str(self.driver_original))
         return True
 
 

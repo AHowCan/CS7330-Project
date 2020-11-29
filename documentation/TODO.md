@@ -34,7 +34,7 @@ DONE - [Tony] Constraint 2: A driver must be given enough rest (defined to be ha
 
 PARTIAL-NEED BONUS 1 - [Tony] Constraint 3: If the departure city of a driver’s next assignment is not the same as the destination of his current assignment. He/She can either take bus(es) from the company that will lead the driver to its next assignment (notice that connecting through multiple buses are allowed), or he/she has to be given 48 hours to reach the next assignment.
 
-[Tony] Constraint 4: The driver should be assigned a route that reaches his/her hometown. Once the driver arrived at his hometown, he/she should be allowed at least 18 hours of rest before the next assignment. (If 18 hours is not enough rest based on condition 2, he/she need to be given more).
+DONE - [Tony] Constraint 4: The driver should be assigned a route that reaches his/her hometown. Once the driver arrived at his hometown, he/she should be allowed at least 18 hours of rest before the next assignment. (If 18 hours is not enough rest based on condition 2, he/she need to be given more).
 
 Done - [Austin] Query 1: The program should get the name of a driver (first and last), and print out the driver’s information, together with the route that the driver is assigned to. (If there is multiple drivers that satisfies the query, print them all (one after the other)).
 
