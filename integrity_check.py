@@ -1,4 +1,5 @@
 import copy
+from pprint import pprint
 import db_interface
 from config import (DAY_OF_WEEK_VALUES,
                     FIRST_DAY_OF_WEEK,
@@ -270,11 +271,12 @@ class DriverConstraintCheck:
                     return False
         if not reaches_home:
             print('ERROR: Driver never reaches home city.')
-            print('  Driver:' + str(self.driver_original))
+            print('Driver:')
+            pprint(self.driver_original)
         else:
-            print(
-                'ERROR: Driver reaches home city but does not get enough leave time.')
-            print('  Driver:' + str(self.driver_original))
+            print('ERROR: Driver reaches home city but does not get enough leave time.')
+            print('Driver:')
+            pprint(self.driver_original)
         return True
 
 
