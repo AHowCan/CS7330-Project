@@ -41,7 +41,7 @@ Done - [Austin] Query 1: The program should get the name of a driver (first and 
 Done - [Austin] Query 2 The program should get the name of a city, and print out all the routes that go through the city (separate departure and destination, order by time: assume Sunday 00:00 am is the starting time).
     ASSUMPTION: He mentions oder by time and gives Sunday 00:00, but implementation is not  querying the days of driver assignments, only routes and their start time.  
 
-[Austin] Query 3 The program should get the route of a bus and print out all information about the route, including the name and ID of the driver that is assigned to it.
+DONE - [Austin] Query 3 The program should get the route of a bus and print out all information about the route, including the name and ID of the driver that is assigned to it.
 
 [Austin] Query 4 The program should get the name of two cities, and response if there is a bus route that go from the first city directly to the second. If so, print all info about that route (as the previous query). If there is more than one, print them all (one after the other)
 

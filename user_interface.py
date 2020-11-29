@@ -117,7 +117,7 @@ def global_response_check(response):
 
 def prompt_query():
     while(True):
-        print("Please select from the following.\n"
+        print("\nPlease select from the following.\n"
               "1) Query driver\n"
               "2) Query city routes\n"
               "3) Query route\n"
@@ -175,12 +175,16 @@ def wipe_database():
 def query_driver():
     print("Provide the first and last name seperated by a comma.")
     response = input(">")
+    global_response_check(response)
+    if response == "back":
+        print_help()
+        return 0
     results = data_pipeline.query_driver(response)
     if results != -1 and results:
         for result in results:
             pprint(result)
     elif not results:
-        print("Unable to find driver")
+        print("Unable to find driver.")
     else:
         print("Error in response")
 
@@ -188,16 +192,38 @@ def query_driver():
 def query_city():
     print("Provide the name of a city.")
     response = input(">")
+    global_response_check(response)
+    if response == "back":
+        print_help()
+        return 0
     result = data_pipeline.query_city(response)
     if result:
         for route in result:
             pprint(route)
     elif not result:
-        print("No routes or city not found")
+        print("Unable to find a city with routes.")
 
 
 def query_route():
-    pass
+    print("Provide a route ID.")
+    response = input(">")
+    global_response_check(response)
+    if response == "back":
+        print_help()
+        return 0
+    result = data_pipeline.query_route(response)
+    if result:
+        pprint(result[0])
+        if result[1] == -2:
+            print("Unable to find assignments for route.")
+        else:
+            driver_assignments = result[1]
+            for driver in driver_assignments:
+                pprint(driver)
+    else:
+        print("Unable to find route ID")
+
+
 
 
 def query_connection():

@@ -87,6 +87,17 @@ def get_route(route_id):
     return route
 
 
+def get_route_assignments(route_id):
+    route_assignments = []
+    assignments = DRIVERS_COLLECTION.find(
+                                          {'assignments.route_number' : route_id})
+    if not assignments:
+        return 0
+    for assignment in assignments:
+        route_assignments.append(assignment)
+    return route_assignments
+
+
 def get_city_routes(city_name):
     all_routes = []
     routes = ROUTES_COLLECTION.find({'departure_city_name' : city_name})

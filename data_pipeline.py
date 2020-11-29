@@ -87,3 +87,19 @@ def query_city(city_name):
                 sorted_routes.append(route)
                 break
     return sorted_routes
+
+
+def query_route(route_id):
+    route = db_interface.get_route(route_id)
+    if not route:
+        return 0
+    assigned_drivers = []
+    assignments_with_route_id = db_interface.get_route_assignments(route_id)
+    if not assignments_with_route_id:
+        return route, -2
+    for assignments in assignments_with_route_id:
+        driver = {'_id':assignments['_id'],
+                  'first_name':assignments['first_name'],
+                  'last_name':assignments['last_name']}
+        assigned_drivers.append(driver)
+    return route, assigned_drivers
