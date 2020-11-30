@@ -45,58 +45,58 @@ def add_route(route):
 
 def get_path(city1, city2, day_of_week):
     # Needs to complete path in 72 hours.
-    #1) Get shortest path -> compare node one to day of leaving (weekend or weekday)
+    #1) Get shortest path -> compare node one to next for the day of leaving (weekend or weekday)
     #2) Traverse list and add times when each leaves, if less then 72 return list
     #3) If node_list is more then 72, increase node1-2 connection weight >> 1
     #4) Recalculate shortest path, repeat
 
+    time_keeper = 0
+    route_list = []
+    current_day = day_of_week
+    prev_route = None
     connections = BUS_ROUTE_GRAPH.get_shortest_path(city1, city2)
     if connections != None:
         print("Shortest path - %s" % connections)
     else:
         print("Still None...")
         return 0
-    connections_list = []
-    alt_route_exists = []
-    time_keeper = 0
-    current_day = day_of_week
-    prev_route = None
     for i in range(len(connections) - 1):
         links = db_interface.get_connection(connections[i], connections[i+1])
         links_list = []
         for link in links:
             links_list.append(link)
-        if len(links) > 1:
-            alt_route_exists.append(i)
-        j = None
+        lowest_time = [config.MAX_MINUTES_IN_CONNECTION] * len(links_list)
         for j in range(len(links_list)):
             schedule = links_list[j]['route_type_code']
             if day_of_week in config.ROUTE_TYPE_VALID_DAYS[schedule]:
-                connections_list.append(links_list[j]['_id'])
-                time_keeper += (int(links_list[j]['travel_time_hours']) * 60) + (int(links_list[j]['travel_time_minutes']))
-                break
+                lowest_time[j] = (int(links_list[j]['travel_time_hours']) * 60) + (int(links_list[j]['travel_time_minutes']))
         if (i-1) >= 0:
-            connection1_depart = get_departure_minute_of_day(links_list[j])
-            connection0_arrival = get_arrival_minute_of_day(prev_route)
-            if connection1_depart > connection0_arrival:
-                time_keeper += (connection1_depart - connection0_arrival)
-            else:
-                if not route_runs_on_next_day(links_list[j], current_day):
-                    time_keeper += 99999999999 # add a lot of time to time_keeper, to trigger new route
-                else:
-                    time_keeper += config.MINUES_IN_DAY - connection0_arrival
-                    time_keeper += connection1_depart
-                current_day = get_next_day(current_day)
-        prev_route = links_list[j]
-        if time_keeper > config.MAX_MINUTES_IN_CONNECTION:
-            if len(alt_route_exists):
-                #redo
-                return -1
-            else:
-                # No route exists
-                return 0
-    #print(time_keeper)
-    return connections_list
+            for j in range(len(links_list)):    
+                if lowest_time[j] < config.MAX_MINUTES_IN_CONNECTION:
+                    connection1_depart = get_departure_minute_of_day(links_list[j])
+                    connection0_arrival = get_arrival_minute_of_day(prev_route)
+                    if connection1_depart > connection0_arrival:
+                        lowest_time[j] += (connection1_depart - connection0_arrival)
+                    else:
+                        if not route_runs_on_next_day(links_list[j], current_day):
+                            lowest_time[j] += config.MAX_MINUTES_IN_CONNECTION
+                        else:
+                            lowest_time[j] += config.MINUES_IN_DAY - connection0_arrival
+                            lowest_time[j] += connection1_depart
+        current_day = get_next_day(current_day)
+        quickest_time = config.MAX_MINUTES_IN_CONNECTION
+        quickest_route = -1
+        for j in range(len(links_list)):
+            if lowest_time[j] < quickest_time:
+                quickest_time = lowest_time[j]
+                quickest_route = j
+        prev_route = links_list[quickest_route]
+        route_list.append(prev_route)
+        time_keeper += quickest_time
+    if time_keeper > config.MAX_MINUTES_IN_CONNECTION:
+            return 0
+    print(time_keeper)
+    return route_list
 
 def get_departure_minute_of_day(route):
     return int(route['departure_time_hours']) * 60 + int(
@@ -114,7 +114,7 @@ def get_next_day(current_day):
     days = config.ROUTE_TYPE_VALID_DAYS['0']
     for j in range(len(days)):
         if days[j] == current_day:
-            return days[j+1]
+            return days[(j+1) % 7]
 
 
 def route_runs_on_next_day(next_route, current_day):
