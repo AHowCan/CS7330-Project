@@ -12,6 +12,7 @@ from config import (CANVAS_DATA_PATH,
 
 
 def begin_UI():
+    data_pipeline.build_graph()
     print_help()
     while(True):
         response = get_input_and_validation()
@@ -36,6 +37,9 @@ def begin_UI():
         elif response == "6":
             wipe_database()
 
+        elif response == "7":
+            print_graph_details()
+
 
 def exit_ui():
     # Use for clean exits
@@ -44,7 +48,7 @@ def exit_ui():
 
 
 def get_input_and_validation(additional_input=[]):
-    checks = ["1", "2", "3", "4", "5", "6", "back", "quit", "help"]
+    checks = ["1", "2", "3", "4", "5", "6", "7", "back", "quit", "help"]
     for check in additional_input:
         checks.append(check)
 
@@ -68,6 +72,7 @@ def print_help():
           "4) [dev] Load data_canvas to database\n"
           "5) [dev] Load data_custom to database\n"
           "6) [dev] Wipe database\n"
+          "7) [dev] Print graph details\n"
           "\n"
           "At any time type\n"
           "'quit' quit program\n"
@@ -121,7 +126,8 @@ def prompt_query():
               "1) Query driver\n"
               "2) Query city routes\n"
               "3) Query route\n"
-              "4) Query route between cities")
+              "4) Query route between cities\n"
+              "5) Query path on specific day")
         response = input(">")
         global_response_check(response)
         if response == "back":
@@ -139,6 +145,9 @@ def prompt_query():
 
         elif response == "4":
             query_connection()
+
+        elif response == "5":
+            query_path()
 
 
 def summary():
@@ -251,6 +260,27 @@ def query_connection():
     else:
         print("Error in response - %s" % response)
 
+def query_path():
+    print(
+          "Provide the names of the two cities, separated by a comma and a day of the week.")
+    response = input(">")
+    global_response_check(response)
+    if response == "back":
+        print_help()
+        return 0
+    result = data_pipeline.query_path(response)
+    if result != -1 and result:
+        for connection in result:
+            print("Route ID - %s" % connection)
+    elif result == -1:
+        print("Error in response")
+    else:
+        print("No path found")
+
+
+def print_graph_details():
+    print("1")
+    data_pipeline.print_graph_details()
 
 if __name__ == "__main__":
     begin_UI()

@@ -16,13 +16,21 @@ def _is_route_type_code_valid(route_type):
     pass
 
 
-def string_separation_check(string_name):
-    if "," in string_name:
-        first_half = string_name.split(',')[0]
-        last_half = string_name.split(',')[1]
-        return first_half, last_half
-    else:
-        return 0
+# def string_separation_check(string_name):
+#     if "," in string_name:
+#         first_half = string_name.split(',')[0]
+#         last_half = string_name.split(',')[1]
+#         return first_half, last_half
+#     else:
+#         return 0
+
+def split_string_by_comma(string_value, expected_splits):
+    if expected_splits != len(string_value.split(',')):
+        return 0 
+    split_string = []
+    for i in range(len(string_value.split(','))):
+        split_string.append(string_value.split(',')[i])
+    return split_string
 
 
 def read_csv(file_name, file_type):

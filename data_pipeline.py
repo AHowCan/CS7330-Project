@@ -9,6 +9,7 @@
 import db_interface
 import integrity_check
 import input_parser
+import graph_controller
 
 
 def load_drivers_to_database(filepath):
@@ -67,10 +68,11 @@ def add_route(route):
         print('route id conflict - %s' % route['_id'])
     else:
         db_interface.add_route(route)
+        graph_controller.add_route(route)
 
 
 def query_driver(driver_name):
-    driver_name = input_parser.string_separation_check(driver_name)
+    driver_name = input_parser.split_string_by_comma(driver_name, 2)
     if driver_name:
         return db_interface.get_driver_name(driver_name)
     else:
@@ -106,7 +108,7 @@ def query_route(route_id):
 
 
 def query_connection(cities):
-    cities = input_parser.string_separation_check(cities)
+    cities = input_parser.split_string_by_comma(cities, 2)
     if cities:
         connections = db_interface.get_connection(cities[0], cities[1])
         if connections:
@@ -115,3 +117,26 @@ def query_connection(cities):
             return 0
     else:
         return -1
+
+
+def query_path(response):
+    responses = input_parser.split_string_by_comma(response,3)
+    if response != -1 and response:
+        return graph_controller.get_path(
+                                         responses[0], responses[1], responses[2])
+    else:
+        return 0
+
+
+def build_graph():
+    graph_controller.build_graph()
+
+
+def print_graph_details():
+        print("----- Graph BEGIN-----")
+        graph = graph_controller.get_graph()
+        for node in graph:
+            for detail in node:
+                print(detail, end=" ")
+            print(" ")
+        print("----- Graph END -----")     

@@ -86,8 +86,8 @@ def _get_departure_minute_of_week(assignment, route):
 
 
 def _get_arrival_minute_of_week(assignment, route):
-    total_travel_time_minutes = int(route['travel_time_hours']) * 60 \
-        + int(route['travel_time_minutes'])
+    total_travel_time_minutes = int(
+                                    route['travel_time_hours']) * 60 + int(route['travel_time_minutes'])
     return _get_departure_minute_of_week(assignment, route) + total_travel_time_minutes
 
 
