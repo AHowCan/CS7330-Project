@@ -102,13 +102,3 @@ def parse_assignment(read_csv):
         assignment['day_of_week'] = row[2]
         assignment_list.append(assignment)
     return assignment_list
-
-
-def sort_route_time(dict_list):
-    sorted_dict = {}
-    for dictonary in dict_list:
-        departure_time = (int(dictonary["departure_time_hours"]) * 60) + (
-            int(dictonary["departure_time_minutes"]))
-        sorted_dict[dictonary["_id"]] = departure_time
-    sorted(sorted_dict.items(), key=lambda item: item[1])
-    return sorted_dict

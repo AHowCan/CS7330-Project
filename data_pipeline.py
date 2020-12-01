@@ -83,7 +83,7 @@ def query_driver(driver_name):
 def query_city(city_name):
     sorted_routes = []
     all_routes = db_interface.get_city_routes(city_name)
-    sorted_route_ids = input_parser.sort_route_time(all_routes)
+    sorted_route_ids = sort_route_time(all_routes)
     for route_id in sorted_route_ids:
         for route in all_routes:
             if route['_id'] == route_id:
@@ -148,3 +148,13 @@ def print_graph_details():
             print(detail, end=" ")
         print(" ")
     print("----- Graph END -----")
+
+
+def sort_route_time(dict_list):
+    sorted_dict = {}
+    for dictionary in dict_list:
+        departure_time = (int(dictionary["departure_time_hours"]) * 60) + (
+            int(dictionary["departure_time_minutes"]))
+        sorted_dict[dictionary["_id"]] = departure_time
+    sorted_dict = sorted(sorted_dict.items(), key=lambda item: item[1])
+    return sorted_dict

@@ -30,7 +30,8 @@ import data_pipeline
 from datetime import datetime
 from config import (ASSIGNMENT_FILE,
                     DRIVER_FILE,
-                    ROUTES_FILE)
+                    ROUTES_FILE,
+                    DAY_STRING_TO_CHAR)
 from os import path
 
 
@@ -123,6 +124,44 @@ def print_data(sender, data):
     print(f'data : {data}')
 
 
+def split_with_comma(s):
+    return s.split(',')
+
+
+def update_routes_from_city_selection(sender, data):
+    window_id = data
+    departure_city = get_value('Departure##'+window_id)
+    destination_city = get_value('Destination##'+window_id)
+    departure_day = get_value('Departure Day##'+window_id)
+    routes = []
+    routes_display = []
+    if departure_city and not destination_city:
+        routes = db_interface.get_city_routes_departure_destination(
+            *split_with_comma(departure_city), 'departure')
+    if destination_city and not departure_city:
+        routes = db_interface.get_city_routes_departure_destination(
+            *split_with_comma(destination_city), 'destination')
+    if departure_city and destination_city and not departure_day:
+        routes = db_interface.get_connection_city_state(
+            *split_with_comma(departure_city),
+            *split_with_comma(destination_city))
+
+    routes = list(routes)
+    routes_sorted = data_pipeline.sort_route_time(routes)
+    routes = {route['_id']: route for route in routes}
+    routes_display = []
+    for sort in routes_sorted:
+        idx = sort[0]
+        route = routes[idx]
+        routes_display.append([
+            route['_id'],
+            route['name'],
+            route['departure_city_name'],
+            route['destination_city_name']])
+
+    configure_item('Routes##'+window_id, items=routes_display)
+
+
 def create_ticketing_window(sender, data):
     global g_window_counter
     window_id = str(g_window_counter)
@@ -134,16 +173,24 @@ def create_ticketing_window(sender, data):
                 on_close=on_window_close):
 
         with group('City Selector##'+window_id, width=200):
+            departure_cities = [city[0]+','+city[1]
+                                for city in db_interface.get_distinct_cities('departure')]
+            departure_cities.insert(0, '')
+            destination_cities = [city[0]+','+city[1]
+                                  for city in db_interface.get_distinct_cities('destination')]
+            destination_cities.insert(0, '')
+            days = list(DAY_STRING_TO_CHAR.keys())
+            days.insert(0, '')
             add_combo('Departure##'+window_id,
-                      items=['a', 'b', 'c', 'd'], callback=print_data)
-            add_combo('Arrival##'+window_id,
-                      items=['a', 'b', 'c', 'd'], callback=print_data)
+                      items=departure_cities, callback=update_routes_from_city_selection, callback_data=window_id)
+            add_combo('Destination##'+window_id,
+                      items=destination_cities, callback=update_routes_from_city_selection, callback_data=window_id)
             add_combo('Departure Day##'+window_id,
-                      items=['a', 'b', 'c', 'd'], callback=print_data)
+                      items=days, callback=update_routes_from_city_selection, callback_data=window_id)
 
         add_same_line(spacing=50)
         add_listbox('Routes##'+window_id, width=300,
-                    items=['a', 'b', 'c', 'd', 'e'], callback=print_data)
+                    items=[], callback=print_data)
         with child('Itinerary Details'):
             add_text('Details')
     g_window_counter += 1

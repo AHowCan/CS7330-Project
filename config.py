@@ -21,6 +21,8 @@ ROUTES_FILE = 'Routes.csv'
 
 # used for sorting assignment days
 DAY_OF_WEEK_VALUES = {'s': 0, 'M': 1, 'T': 2, 'W': 3, 'U': 4, 'F': 5, 'S': 6}
+DAY_STRING_TO_CHAR = {'Sunday': 's', 'Monday': 'M', 'Tuesday': 'T',
+                      'Wednesday': 'W', 'Thursday': 'U', 'Friday': 'F', 'Saturday': 'S'}
 FIRST_DAY_OF_WEEK = 's'
 WEEKDAYS = ['M', 'T', 'W', 'U', 'F']
 WEEKENDS = ['S', 's']

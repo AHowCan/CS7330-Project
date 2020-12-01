@@ -114,12 +114,17 @@ def get_distinct_cities(departure_or_destination):
 
 
 def get_connection(city1, city2):
-    all_connections = []
     connections = ROUTES_COLLECTION.find({'departure_city_name': city1,
                                           'destination_city_name': city2})
-    for connection in connections:
-        all_connections.append(connection)
-    return all_connections
+    return list(connections)
+
+
+def get_connection_city_state(city1, state1, city2, state2):
+    connections = ROUTES_COLLECTION.find({'departure_city_name': city1,
+                                          'departure_city_code': state1,
+                                          'destination_city_name': city2,
+                                          'destination_city_code': state2})
+    return list(connections)
 
 
 def get_route_assignments(route_id):
@@ -142,6 +147,14 @@ def get_city_routes(city_name):
     for route in routes:
         all_routes.append(route)
     return all_routes
+
+
+def get_city_routes_departure_destination(city, state, departure_or_destination):
+    d = departure_or_destination
+    if d not in ['departure', 'destination']:
+        log("ERROR, departure_or_destination must be one of 'departure','destination'")
+        return []
+    return ROUTES_COLLECTION.find({f'{d}_city_name': city, f'{d}_city_code': state})
 
 
 def wipe_database():
