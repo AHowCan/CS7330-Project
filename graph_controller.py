@@ -40,8 +40,8 @@ def add_route(route):
         BUS_ROUTE_GRAPH.add_new_node(city1, city1)
     if not BUS_ROUTE_GRAPH.get_node_data(city2):
         BUS_ROUTE_GRAPH.add_new_node(city2, city2)
-    BUS_ROUTE_GRAPH.add_connection(city1, city2)
-
+    BUS_ROUTE_GRAPH.add_connection(city1, city2, get_travel_time(route))
+    
 
 def get_path(city1, city2, day_of_week):
     # Needs to complete path in 72 hours.
@@ -109,6 +109,9 @@ def get_arrival_minute_of_day(route):
                route['travel_time_hours']) * 60 + int(
                route['travel_time_minutes'])
 
+def get_travel_time(route):
+    return int(route['travel_time_hours']) * 60 + int(
+               route['travel_time_minutes'])
 
 def get_next_day(current_day):
     days = config.ROUTE_TYPE_VALID_DAYS['0']
@@ -124,3 +127,37 @@ def route_runs_on_next_day(next_route, current_day):
         return 1
     else:
         return 0
+
+
+def get_all_paths(city1, city2, visited, path):
+    graph_vertices = BUS_ROUTE_GRAPH.get_all_data()
+    # print("----")
+    # print(graph_vertices)
+    # print(visited)
+    # print(path)
+    # print("city1 %s" % city1)
+    # print("city2 %s" % city2)
+    # print("----")
+    city_add = None
+    for i in range(len(graph_vertices)):
+        if graph_vertices[i] == city1:
+            visited[i] = True
+            city_add = graph_vertices[i]
+            path.append(city_add)
+    if city1 == city2:
+        print(path)
+    else:
+        for i in range(len(BUS_ROUTE_GRAPH.get_all_neighbors(city_add))):
+            if visited[i] == False:
+                get_all_paths(graph_vertices[i], city2, visited, path)
+    path.pop()
+    for i in range(len(graph_vertices)):
+        if graph_vertices[i] == city1:
+            visited[i] = False
+
+
+def return_all_paths(city1, city2):
+    vertices = BUS_ROUTE_GRAPH.get_all_data()
+    visited = [False]*(len(vertices))
+    path = []
+    get_all_paths(city1, city2, visited, path)

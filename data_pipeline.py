@@ -128,6 +128,9 @@ def query_path(response):
         return 0
 
 
+def query_all_paths(city1,city2):
+    graph_controller.return_all_paths(city1,city2)
+
 def build_graph():
     graph_controller.build_graph()
 
