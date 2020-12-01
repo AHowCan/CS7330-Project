@@ -6,6 +6,8 @@ from dearpygui.core import (show_logger,
                             add_menu_item,
                             add_button,
                             add_text,
+                            add_combo,
+                            add_listbox,
                             add_same_line,
                             select_directory_dialog,
                             set_value,
@@ -19,7 +21,9 @@ from dearpygui.simple import (window,
                               show_documentation,
                               show_debug,
                               menu_bar,
-                              menu)
+                              menu,
+                              child,
+                              group)
 
 import db_interface
 import data_pipeline
@@ -34,6 +38,8 @@ TITLE = 'Our buses do not smell! Okay, maybe a little. But only in the summer. O
 
 SELECTED_FOLDER_VAR = 'SELECTED_FOLDER_VAR'
 FILES_FOUND_STR_VAR = 'FILES_FOUND_STR_VAR'
+
+g_window_counter = 0
 
 set_value(FILES_FOUND_STR_VAR, 'No files found')
 set_value(SELECTED_FOLDER_VAR, 'None')
@@ -98,6 +104,51 @@ def create_import_data_window(sender, data):
             set_value(SELECTED_FOLDER_VAR, 'None')
 
 
+def create_admin_window(sender, data):
+    global g_window_counter
+    window_id = str(g_window_counter)
+    with window('Administration##Window'+window_id,
+                width=800,
+                height=800,
+                x_pos=20,
+                y_pos=20,
+                on_close=on_window_close):
+        add_same_line()
+    g_window_counter += 1
+
+
+def print_data(sender, data):
+    print(get_value(sender))
+    print(sender)
+    print(data)
+
+
+def create_ticketing_window(sender, data):
+    global g_window_counter
+    window_id = str(g_window_counter)
+    with window('Ticketing##Window'+window_id,
+                width=800,
+                height=800,
+                x_pos=20,
+                y_pos=20,
+                on_close=on_window_close):
+
+        with group('City Selector##'+window_id, width=200):
+            add_combo('Departure##'+window_id,
+                      items=['a', 'b', 'c', 'd'], callback=print_data)
+            add_combo('Arrival##'+window_id,
+                      items=['a', 'b', 'c', 'd'], callback=print_data)
+            add_combo('Departure Day##'+window_id,
+                      items=['a', 'b', 'c', 'd'], callback=print_data)
+
+        add_same_line(spacing=50)
+        add_listbox('Routes##'+window_id, width=300,
+                    items=['a', 'b', 'c', 'd', 'e'], callback=print_data)
+        with child('Itinerary Details'):
+            add_text('Details')
+    g_window_counter += 1
+
+
 def wipe_database(sender, data):
     db_interface.wipe_database()
 
@@ -108,6 +159,10 @@ with window('PrimaryWindow'):
         with menu('Windows'):
             add_menu_item('Import Data##menu',
                           callback=create_import_data_window)
+            add_menu_item('Administration##menu',
+                          callback=create_admin_window)
+            add_menu_item('Ticketing##menu',
+                          callback=create_ticketing_window)
             add_menu_item('[dev] Logger',
                           callback=show_logger)
             add_menu_item('[dev] Metrics',
@@ -122,5 +177,6 @@ set_main_window_title(TITLE)
 
 
 create_import_data_window(None, None)
+create_ticketing_window(None, None)
 
 start_dearpygui(primary_window='PrimaryWindow')
