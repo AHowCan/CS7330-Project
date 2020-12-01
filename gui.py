@@ -68,7 +68,7 @@ def set_selected_folder(sender, data):
     all_files_found = found_assignment_file and found_driver_file and found_routes_file
     configure_item('Import Files##btn', enabled=all_files_found)
     if not all_files_found:
-        prompt_text += '\nSome files are missing, please ensure that they are exist and are named correctly'
+        prompt_text += '\nSome files are missing, please ensure that they exist and are named correctly'
 
     set_value(FILES_FOUND_STR_VAR, prompt_text)
 
@@ -91,7 +91,7 @@ def create_import_data_window(sender, data):
         log_debug('Import Data window already exists')
     else:
 
-        with window('Import Data##Window', on_close=on_window_close):
+        with window('Import Data##Window', on_close=on_window_close, width=400):
             add_button('Select Folder##btn',
                        callback=select_folder)
             add_same_line()
@@ -106,17 +106,58 @@ def create_import_data_window(sender, data):
             set_value(SELECTED_FOLDER_VAR, 'None')
 
 
-def create_admin_window(sender, data):
+def create_drivers_window(sender, data):
     global g_window_counter
     window_id = str(g_window_counter)
-    with window('Administration##Window'+window_id,
+    with window('Drivers##Window'+window_id,
                 width=800,
                 height=800,
                 x_pos=20,
                 y_pos=20,
                 on_close=on_window_close):
-        add_same_line()
+        driver_names = [driver['first_name']+','+driver['last_name']
+                        for driver in db_interface.get_all_drivers()]
+        add_combo('Drivers##Combo'+window_id,
+                  items=driver_names, callback=update_driver_info_panel, callback_data=window_id)
+        with child('Driver Details##'+window_id):
+            add_text('DriverDetails##txt'+window_id)
     g_window_counter += 1
+
+
+def update_driver_info_panel(sender, data):
+    window_id = data
+    driver_fullname = get_value(sender)
+    driver_fullname = split_with_comma(driver_fullname)
+    driver_info = pformat(db_interface.get_driver_name(driver_fullname))
+    set_value('DriverDetails##txt'+window_id, driver_info)
+
+
+def create_routes_window(sender, data):
+    global g_window_counter
+    window_id = str(g_window_counter)
+    with window('Routes##Window'+window_id,
+                width=800,
+                height=800,
+                x_pos=20,
+                y_pos=20,
+                on_close=on_window_close):
+        route_ids = [route['_id']
+                     for route in db_interface.get_all_routes()]
+        add_combo('Routes##Combo'+window_id,
+                  items=route_ids, callback=update_routes_info_panel, callback_data=window_id)
+        with child('Route Details##'+window_id):
+            add_text('RouteDetails##txt'+window_id)
+            set_value('RouteDetails##txt'+window_id, '')
+
+    g_window_counter += 1
+
+
+def update_routes_info_panel(sender, data):
+    window_id = data
+    route_id = get_value(sender)
+    route_and_assignments = data_pipeline.query_route(route_id)
+    route_info = pformat(route_and_assignments)
+    set_value('RouteDetails##txt'+window_id, route_info)
 
 
 def print_data(sender, data):
@@ -209,32 +250,36 @@ def wipe_database(sender, data):
     db_interface.wipe_database()
 
 
-with window('PrimaryWindow'):
+def begin_gui():
+    with window('PrimaryWindow'):
+        with menu_bar('MenuBar'):
+            with menu('Windows'):
+                add_menu_item('Import Data##menu',
+                              callback=create_import_data_window)
+                add_menu_item('Drivers##menu',
+                              callback=create_drivers_window)
+                add_menu_item('Routes##menu',
+                              callback=create_routes_window)
+                add_menu_item('Ticketing##menu',
+                              callback=create_ticketing_window)
+                add_menu_item('[dev] Logger',
+                              callback=show_logger)
+                add_menu_item('[dev] Metrics',
+                              callback=show_metrics)
+                add_menu_item('[dev] Debug',
+                              callback=show_debug)
+            with menu('DB Admin'):
+                add_menu_item('Clear Database', callback=wipe_database)
 
-    with menu_bar('MenuBar'):
-        with menu('Windows'):
-            add_menu_item('Import Data##menu',
-                          callback=create_import_data_window)
-            add_menu_item('Administration##menu',
-                          callback=create_admin_window)
-            add_menu_item('Ticketing##menu',
-                          callback=create_ticketing_window)
-            add_menu_item('[dev] Logger',
-                          callback=show_logger)
-            add_menu_item('[dev] Metrics',
-                          callback=show_metrics)
-            add_menu_item('[dev] Debug',
-                          callback=show_debug)
-        with menu('DB Admin'):
-            add_menu_item('Clear Database', callback=wipe_database)
+    set_main_window_title(TITLE)
+
+    create_import_data_window(None, None)
+    create_ticketing_window(None, None)
+
+    data_pipeline.build_graph()
+
+    start_dearpygui(primary_window='PrimaryWindow')
 
 
-set_main_window_title(TITLE)
-
-
-create_import_data_window(None, None)
-create_ticketing_window(None, None)
-
-data_pipeline.build_graph()
-
-start_dearpygui(primary_window='PrimaryWindow')
+if __name__ == '__main__':
+    begin_gui()

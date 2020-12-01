@@ -20,3 +20,65 @@ I have created a new entry in the project assignment called Project video and yo
 You can either upload the video or you can post a link to somewhere (like YouTube). It's completly up to you. 
 
 Thanks.
+
+Video Notes
+
+Schema
+
+Database bus_network:
+  Collection drivers:
+    _id: string, 5 character max (unique)
+    name_last: string
+    name_first: string
+    age: int
+    hometown_city: string (unique by state)
+    hometown_state: string, 2 letters
+    routes: array of Assignment objects
+      Assignment Object:
+        route_id: string, 5 character max, comes from routes collection (unique)
+        day_of_week: char
+  Collection routes:
+    _id: string, 5 character max (unique)
+    name: string (may be empty)
+    departure_city: string (unique by state)
+    departure_state: string, 2 letters
+    destination_city: string (unique by state)
+    destination_state: string, 2 letters
+    type_id: int ( 0, 1, or 2)
+    departure_hour: int
+    departure_minutes: int
+    travel_hours: int
+    travel_minutes: int
+
+
+run through of the code
+
+GUI / Command Line
+    gui.py
+    user_interface.py
+data_pipleline.py
+    input_parser.py
+        parsing
+        report error on wrong number of fields [not implemented]
+        auto-correcting [not implemented]
+        sanitizing [not implemented]
+    integrity_check.py
+        id conflicts
+        route type mismatch
+        missing assignment route
+        assignment overlap - all times are converted into minutes since sunday 00
+        checked at end
+        enough rest time
+        enough time to reach next assignment [partial 48h]
+        reaches hometown and enough rest
+
+    graph_controller.py
+        build a graph of route connections
+        dijkstra algorithm to find shortest path
+
+db_interface.py
+    queries
+
+config.py
+
+https://github.com/AHowCan/CS7330-Project

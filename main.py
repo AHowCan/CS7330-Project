@@ -1,9 +1,11 @@
 import user_interface
 import db_interface
+import gui
 
 
 def main():
-    user_interface.begin_UI()
+    gui.begin_gui()
+    # user_interface.begin_UI()
 
 
 if __name__ == '__main__':
