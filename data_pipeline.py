@@ -101,9 +101,9 @@ def query_route(route_id):
     if not assignments_with_route_id:
         return route, -2
     for assignments in assignments_with_route_id:
-        driver = {'_id':assignments['_id'],
-                  'first_name':assignments['first_name'],
-                  'last_name':assignments['last_name']}
+        driver = {'_id': assignments['_id'],
+                  'first_name': assignments['first_name'],
+                  'last_name': assignments['last_name']}
         assigned_drivers.append(driver)
     return route, assigned_drivers
 
@@ -121,29 +121,30 @@ def query_connection(cities):
 
 
 def query_path(response):
-    response = input_parser.split_string_by_comma(response,3)
+    response = input_parser.split_string_by_comma(response, 3)
     if response != -1 and response:
         log(response)
         return graph_controller.get_path(
-                                         response[0], response[1], response[2])
+            response[0], response[1], response[2])
     elif response == -1:
         return -1
     else:
         return 0
 
 
-def query_all_paths(city1,city2):
-    graph_controller.return_all_paths(city1,city2)
+def query_all_paths(city1, city2):
+    graph_controller.return_all_paths(city1, city2)
+
 
 def build_graph():
     graph_controller.build_graph()
 
 
 def print_graph_details():
-        log("----- Graph BEGIN-----")
-        graph = graph_controller.get_graph()
-        for node in graph:
-            for detail in node:
-                log(detail, end=" ")
-            log(" ")
-        log("----- Graph END -----")     
+    print("----- Graph BEGIN-----")
+    graph = graph_controller.get_graph()
+    for node in graph:
+        for detail in node:
+            print(detail, end=" ")
+        print(" ")
+    print("----- Graph END -----")
