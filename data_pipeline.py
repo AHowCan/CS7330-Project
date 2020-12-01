@@ -120,10 +120,13 @@ def query_connection(cities):
 
 
 def query_path(response):
-    responses = input_parser.split_string_by_comma(response,3)
+    response = input_parser.split_string_by_comma(response,3)
     if response != -1 and response:
+        print(response)
         return graph_controller.get_path(
-                                         responses[0], responses[1], responses[2])
+                                         response[0], response[1], response[2])
+    elif response == -1:
+        return -1
     else:
         return 0
 
