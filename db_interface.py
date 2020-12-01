@@ -4,6 +4,7 @@ from config import DB_NAME, TEST_DB_URI, COL_DRIVERS, COL_ROUTES, DB_URI
 from connect import Connect
 
 from pprint import pprint
+from logger import log, plog
 
 # generally never use globals, except in class projects
 CLIENT = Connect.get_connection()

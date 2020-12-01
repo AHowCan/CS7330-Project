@@ -1,0 +1,22 @@
+Project Presentation video
+Here are the details of the presentation video:
+
+-- Your video should be around 10-15 minutes. (Probably 10 minutes without the bonus, 15 minutes with at least one minutes)
+
+-- Your video should have the following components
+
+-- A brief description of your schema: highlighting how the schema satisfies the requirement of the question
+
+-- A brief run through of the code (very high level only), focus on how the code help check all remaining constraints
+
+-- A short demo to show that you are able to input the data correctly. You may have to create your own data set to demo the point. 
+
+-- A short presentation of the queries, demonstrating that you are answering the query correctly.
+
+(If you use your own data file, please upload a copy of data file in Canvas). 
+
+I have created a new entry in the project assignment called Project video and you can upload your video there
+
+You can either upload the video or you can post a link to somewhere (like YouTube). It's completly up to you. 
+
+Thanks.

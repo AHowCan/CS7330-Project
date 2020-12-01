@@ -1,5 +1,4 @@
 import copy
-from pprint import pprint
 import db_interface
 from config import (DAY_OF_WEEK_VALUES,
                     FIRST_DAY_OF_WEEK,
@@ -8,6 +7,7 @@ from config import (DAY_OF_WEEK_VALUES,
                     TIME_EPSILON,
                     MINUTES_TO_SWITCH_CITIES,
                     HOMETOWN_REST_MINUTES)
+from logger import log, plog
 
 
 def check_driver_conflicts(driver):
@@ -54,8 +54,8 @@ def _check_assignment_route_type_mismatch(assignment):
     if day in valid_days:
         return False
     else:
-        print('ERROR, assignment day does not match route type: assignment: ' + str(assignment))
-        print('  Valid days for this route are: ' + str(valid_days))
+        log('ERROR, assignment day does not match route type: assignment: ' + str(assignment))
+        log('  Valid days for this route are: ' + str(valid_days))
         return True
 
 
@@ -64,7 +64,7 @@ def _check_assignment_route_missing(assignment):
     route_number = assignment['route_number']
     route = db_interface.get_route(route_number)
     if not route:
-        print('ERROR, route not found for assignment: ' + str(assignment))
+        log('ERROR, route not found for assignment: ' + str(assignment))
         return True
     return False
 
@@ -87,7 +87,7 @@ def _get_departure_minute_of_week(assignment, route):
 
 def _get_arrival_minute_of_week(assignment, route):
     total_travel_time_minutes = int(
-                                    route['travel_time_hours']) * 60 + int(route['travel_time_minutes'])
+        route['travel_time_hours']) * 60 + int(route['travel_time_minutes'])
     return _get_departure_minute_of_week(assignment, route) + total_travel_time_minutes
 
 
@@ -113,9 +113,9 @@ def _check_assignment_time_overlap_conflict(assignment1, assignment2):
             if (assignment1_arrival % MINUTES_IN_WEEK) > assignment2_departure:
                 any_errors = True
     if any_errors:
-        print('ERROR: assignments overlap')
-        print('  Assignment_1: ' + str(assignment1))
-        print('  Assignment_2: ' + str(assignment2))
+        log('ERROR: assignments overlap')
+        log('  Assignment_1: ' + str(assignment1))
+        log('  Assignment_2: ' + str(assignment2))
     return any_errors
 
 
@@ -179,12 +179,12 @@ class DriverConstraintCheck:
         if rest_time >= (assignment1_duration / 2 - TIME_EPSILON):
             return False
 
-        print('ERROR: driver: {} not getting enough rest.'.format(
+        log('ERROR: driver: {} not getting enough rest.'.format(
             self.driver_ext['_id']))
-        print('  Assignment_1: ' +
-              str(self._clear_extended_info(assignment1)))
-        print('  Assignment_2: ' +
-              str(self._clear_extended_info(assignment2)))
+        log('  Assignment_1: ' +
+            str(self._clear_extended_info(assignment1)))
+        log('  Assignment_2: ' +
+            str(self._clear_extended_info(assignment2)))
         return True
 
     def _pairwise_assignment_checks(self):
@@ -230,12 +230,12 @@ class DriverConstraintCheck:
         if time_between_assignments >= MINUTES_TO_SWITCH_CITIES - TIME_EPSILON:
             return False
 
-        print('ERROR: Driver {} can\'t reach next assignment in time'.format(
+        log('ERROR: Driver {} can\'t reach next assignment in time'.format(
             self.driver_ext['_id']))
-        print('  Assignment_1: ' +
-              str(self._clear_extended_info(assignment1)))
-        print('  Assignment_2: ' +
-              str(self._clear_extended_info(assignment2)))
+        log('  Assignment_1: ' +
+            str(self._clear_extended_info(assignment1)))
+        log('  Assignment_2: ' +
+            str(self._clear_extended_info(assignment2)))
         return True
 
     def _hometown_check(self):
@@ -270,13 +270,13 @@ class DriverConstraintCheck:
                     rest_requirement_met = True
                     return False
         if not reaches_home:
-            print('ERROR: Driver never reaches home city.')
-            print('Driver:')
-            pprint(self.driver_original)
+            log('ERROR: Driver never reaches home city.')
+            log('Driver:')
+            plog(self.driver_original)
         else:
-            print('ERROR: Driver reaches home city but does not get enough leave time.')
-            print('Driver:')
-            pprint(self.driver_original)
+            log('ERROR: Driver reaches home city but does not get enough leave time.')
+            log('Driver:')
+            plog(self.driver_original)
         return True
 
 

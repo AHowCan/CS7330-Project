@@ -10,6 +10,7 @@ import db_interface
 import integrity_check
 import input_parser
 import graph_controller
+from logger import log, plog
 
 
 def load_drivers_to_database(filepath):
@@ -53,19 +54,19 @@ def add_assignment(assignment):
         else:
             db_interface.add_assignment(assignment)
     else:
-        print('Driver not found for assignment -%s\n' % assignment)
+        log('Driver not found for assignment -%s\n' % assignment)
 
 
 def add_driver(driver):
     if integrity_check.check_driver_conflicts(driver):
-        print('driver id conflict - %s' % driver['_id'])
+        log('driver id conflict - %s' % driver['_id'])
     else:
         db_interface.add_driver(driver)
 
 
 def add_route(route):
     if integrity_check.check_route_conflicts(route):
-        print('route id conflict - %s' % route['_id'])
+        log('route id conflict - %s' % route['_id'])
     else:
         db_interface.add_route(route)
         graph_controller.add_route(route)
@@ -122,7 +123,7 @@ def query_connection(cities):
 def query_path(response):
     response = input_parser.split_string_by_comma(response,3)
     if response != -1 and response:
-        print(response)
+        log(response)
         return graph_controller.get_path(
                                          response[0], response[1], response[2])
     elif response == -1:
@@ -139,10 +140,10 @@ def build_graph():
 
 
 def print_graph_details():
-        print("----- Graph BEGIN-----")
+        log("----- Graph BEGIN-----")
         graph = graph_controller.get_graph()
         for node in graph:
             for detail in node:
-                print(detail, end=" ")
-            print(" ")
-        print("----- Graph END -----")     
+                log(detail, end=" ")
+            log(" ")
+        log("----- Graph END -----")     

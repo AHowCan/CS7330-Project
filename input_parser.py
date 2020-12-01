@@ -2,6 +2,7 @@
 
 import csv
 from config import (DAY_OF_WEEK_VALUES)
+from logger import log, plog
 
 
 def _is_day_of_week_valid(day):
