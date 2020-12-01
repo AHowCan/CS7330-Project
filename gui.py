@@ -33,6 +33,7 @@ from config import (ASSIGNMENT_FILE,
                     ROUTES_FILE,
                     DAY_STRING_TO_CHAR)
 from os import path
+from pprint import pformat
 
 
 TITLE = 'Our buses do not smell! Okay, maybe a little. But only in the summer. Oh alright, they smell damn awful in the summer. [SIGHING SOUND] [END OF AUTOMATED VOICE TRANSCRIPT]'
@@ -146,6 +147,12 @@ def update_routes_from_city_selection(sender, data):
             *split_with_comma(departure_city),
             *split_with_comma(destination_city))
 
+    if departure_city and destination_city and departure_day:
+        departure = split_with_comma(departure_city)[0]
+        destination = split_with_comma(destination_city)[0]
+        day = DAY_STRING_TO_CHAR[departure_day]
+        routes = data_pipeline.query_path(f'{departure},{destination},{day}')
+
     routes = list(routes)
     routes_sorted = data_pipeline.sort_route_time(routes)
     routes = {route['_id']: route for route in routes}
@@ -160,6 +167,8 @@ def update_routes_from_city_selection(sender, data):
             route['destination_city_name']])
 
     configure_item('Routes##'+window_id, items=routes_display)
+    routes = pformat(routes)
+    set_value('Details##txt'+window_id, routes)
 
 
 def create_ticketing_window(sender, data):
@@ -191,8 +200,8 @@ def create_ticketing_window(sender, data):
         add_same_line(spacing=50)
         add_listbox('Routes##'+window_id, width=300,
                     items=[], callback=print_data)
-        with child('Itinerary Details'):
-            add_text('Details')
+        with child('Details##'+window_id):
+            add_text('Details##txt'+window_id)
     g_window_counter += 1
 
 
@@ -225,5 +234,7 @@ set_main_window_title(TITLE)
 
 create_import_data_window(None, None)
 create_ticketing_window(None, None)
+
+data_pipeline.build_graph()
 
 start_dearpygui(primary_window='PrimaryWindow')
