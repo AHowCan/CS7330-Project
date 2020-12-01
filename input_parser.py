@@ -49,9 +49,15 @@ def read_csv(file_name, file_type):
             return -1
 
 
+def sanitize_tokens(tokens):
+    tokens = [token.strip() for token in tokens]
+    return tokens
+
+
 def parse_routes(read_csv):
     routes_list = []
     for row in read_csv:
+        row = sanitize_tokens(row)
         routes = {}
         if len(row) == 11:
             routes['_id'] = row[0]
@@ -74,6 +80,7 @@ def parse_routes(read_csv):
 def parse_driver(read_csv):
     driver_list = []
     for row in read_csv:
+        row = sanitize_tokens(row)
         driver = {}
         driver['_id'] = row[0]
         driver['first_name'] = row[1]
@@ -88,6 +95,7 @@ def parse_driver(read_csv):
 def parse_assignment(read_csv):
     assignment_list = []
     for row in read_csv:
+        row = sanitize_tokens(row)
         assignment = {}
         assignment['driver_id'] = row[0]
         assignment['route_number'] = row[1]
@@ -100,7 +108,7 @@ def sort_route_time(dict_list):
     sorted_dict = {}
     for dictonary in dict_list:
         departure_time = (int(dictonary["departure_time_hours"]) * 60) + (
-                          int(dictonary["departure_time_minutes"]))
+            int(dictonary["departure_time_minutes"]))
         sorted_dict[dictonary["_id"]] = departure_time
     sorted(sorted_dict.items(), key=lambda item: item[1])
     return sorted_dict

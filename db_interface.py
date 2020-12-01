@@ -59,11 +59,11 @@ def get_driver(driver_id):
 
 def get_driver_name(driver_name):
     driver_list = []
-    drivers = DRIVERS_COLLECTION.find( 
-                                      { 'first_name' : driver_name[0] ,
-                                        'last_name' : driver_name[1]} )
+    drivers = DRIVERS_COLLECTION.find(
+        {'first_name': driver_name[0],
+         'last_name': driver_name[1]})
     for driver in drivers:
-            driver_list.append(driver)
+        driver_list.append(driver)
     return driver_list
 
 
@@ -88,10 +88,35 @@ def get_route(route_id):
     return route
 
 
+def get_distinct_cities(departure_or_destination):
+    '''will return departure/destination cities with states
+    e.g.
+    [['Richardson', 'TX'], ['Dallas', 'TX'], ['Houston', 'TX'], ['Waco', 'TX']]
+    '''
+    d = departure_or_destination
+    if d not in ['departure', 'destination']:
+        log("ERROR, departure_or_destination must be one of 'departure','destination'")
+        return []
+
+    cities = ROUTES_COLLECTION.aggregate([{
+        '$group': {
+            '_id': {
+                f'{d}_city_name': f'${d}_city_name',
+                f'{d}_city_code': f'${d}_city_code'
+            }
+        }
+    }
+    ])
+    cities = [
+        [city['_id'][f'{d}_city_name'], city['_id'][f'{d}_city_code']]
+        for city in cities]
+    return cities
+
+
 def get_connection(city1, city2):
     all_connections = []
-    connections = ROUTES_COLLECTION.find({'departure_city_name' : city1,
-                                          'destination_city_name' : city2})
+    connections = ROUTES_COLLECTION.find({'departure_city_name': city1,
+                                          'destination_city_name': city2})
     for connection in connections:
         all_connections.append(connection)
     return all_connections
@@ -100,7 +125,7 @@ def get_connection(city1, city2):
 def get_route_assignments(route_id):
     route_assignments = []
     assignments = DRIVERS_COLLECTION.find(
-                                          {'assignments.route_number' : route_id})
+        {'assignments.route_number': route_id})
     if not assignments:
         return 0
     for assignment in assignments:
@@ -110,13 +135,14 @@ def get_route_assignments(route_id):
 
 def get_city_routes(city_name):
     all_routes = []
-    routes = ROUTES_COLLECTION.find({'departure_city_name' : city_name})
+    routes = ROUTES_COLLECTION.find({'departure_city_name': city_name})
     for route in routes:
         all_routes.append(route)
-    routes = ROUTES_COLLECTION.find({'destination_city_name' : city_name})
+    routes = ROUTES_COLLECTION.find({'destination_city_name': city_name})
     for route in routes:
         all_routes.append(route)
     return all_routes
+
 
 def wipe_database():
     DRIVERS_COLLECTION.remove()

@@ -118,9 +118,9 @@ def create_admin_window(sender, data):
 
 
 def print_data(sender, data):
-    print(get_value(sender))
-    print(sender)
-    print(data)
+    print(f'get_value(sender): {get_value(sender)}')
+    print(f'sender : {sender}')
+    print(f'data : {data}')
 
 
 def create_ticketing_window(sender, data):
