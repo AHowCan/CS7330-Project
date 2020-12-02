@@ -121,6 +121,7 @@ def create_drivers_window(sender, data):
                   items=driver_names, callback=update_driver_info_panel, callback_data=window_id)
         with child('Driver Details##'+window_id):
             add_text('DriverDetails##txt'+window_id)
+            set_value('DriverDetails##txt'+window_id, '')
     g_window_counter += 1
 
 
@@ -243,6 +244,7 @@ def create_ticketing_window(sender, data):
                     items=[], callback=print_data)
         with child('Details##'+window_id):
             add_text('Details##txt'+window_id)
+            set_value('Details##txt'+window_id, '')
     g_window_counter += 1
 
 
@@ -275,7 +277,8 @@ def begin_gui():
 
     create_import_data_window(None, None)
     create_ticketing_window(None, None)
-
+    create_drivers_window(None, None)
+    create_routes_window(None, None)
     data_pipeline.build_graph()
 
     start_dearpygui(primary_window='PrimaryWindow')
