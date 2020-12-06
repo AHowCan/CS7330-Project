@@ -86,7 +86,7 @@ def query_city(city_name):
     sorted_route_ids = sort_route_time(all_routes)
     for route_id in sorted_route_ids:
         for route in all_routes:
-            if route['_id'] == route_id:
+            if route['_id'] == route_id[0]:
                 sorted_routes.append(route)
                 break
     return sorted_routes
@@ -123,7 +123,7 @@ def query_connection(cities):
 def query_path(response):
     response = input_parser.split_string_by_comma(response, 3)
     if response != -1 and response:
-        log(response)
+        # log(response)
         return graph_controller.get_path(
             response[0], response[1], response[2])
     elif response == -1:

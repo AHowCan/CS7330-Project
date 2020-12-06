@@ -56,7 +56,8 @@ def get_path(city1, city2, day_of_week):
     prev_route = None
     connections = BUS_ROUTE_GRAPH.get_shortest_path(city1, city2)
     if connections != None:
-        print("Shortest path - %s" % connections)
+        pass
+        # print("Shortest path - %s" % connections)
     else:
         print("Still None...")
         return 0
@@ -95,7 +96,7 @@ def get_path(city1, city2, day_of_week):
         time_keeper += quickest_time
     if time_keeper > config.MAX_MINUTES_IN_CONNECTION:
             return 0
-    print(time_keeper)
+    # print(time_keeper)
     return route_list
 
 def get_departure_minute_of_day(route):
@@ -131,13 +132,6 @@ def route_runs_on_next_day(next_route, current_day):
 
 def get_all_paths(city1, city2, visited, path):
     graph_vertices = BUS_ROUTE_GRAPH.get_all_data()
-    # print("----")
-    # print(graph_vertices)
-    # print(visited)
-    # print(path)
-    # print("city1 %s" % city1)
-    # print("city2 %s" % city2)
-    # print("----")
     city_add = None
     for i in range(len(graph_vertices)):
         if graph_vertices[i] == city1:
@@ -145,7 +139,8 @@ def get_all_paths(city1, city2, visited, path):
             city_add = graph_vertices[i]
             path.append(city_add)
     if city1 == city2:
-        print(path)
+        pass
+        # print(path)
     else:
         for i in range(len(BUS_ROUTE_GRAPH.get_all_neighbors(city_add))):
             if visited[i] == False:
