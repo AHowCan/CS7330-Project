@@ -1,3 +1,30 @@
+# Developer Manual
+
+## Overview
+
+### config.py
+
+### connect.py
+
+### data_pipeline.py
+
+### db_interface.py
+
+### graph_controller.py
+
+### gui.py
+
+### input_parser.py
+
+### local_config.py
+
+### logger.py
+
+### main.py
+
+### user_interface.py
+
+
 Restrictions:
 1) A driver cannot be driving more then one bus at a time. Whenever an assignment is given to a driver, it will first check if this new assignment overlaps any previous assignment routes. If an assignment is found, it will inform the user that there is a conflict with the new assignment.
 
