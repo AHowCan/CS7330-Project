@@ -1,4 +1,4 @@
-Team 0: Bus Network System
+Team 0: Bus Network System:tm:
 User Manual
 v1.0
 ---------------------------------
@@ -6,6 +6,7 @@ v1.0
 Purpose:
 The system is used to keep track of routes between cities, the drivers for the buses and their assignments. To provide an easy querying tool to retrieve this information. Drivers, routes and assignments can all be entered in by provided the names of the CSV files.
 
+## Command Line Interface
 
 Adding Data:
 
@@ -130,3 +131,45 @@ Route Codes:
     0 = Daily
     1 = Weekdays only
     2 = Weekends only
+
+## Graphical User Interface
+
+The Bus Network System Graphical User Interface:tm: is a revolutionary user friendly interface to interact with the Bus Network System. 
+
+### Import Data:
+
+- From the menu bar select Windows -> Import Data
+- This will bring up the Import Data Window
+- Click Select folder, you will be prompted to choose a directory that contains your data, click ok
+  - Make sure that you select the directory containing the data. DO NOT navigate into the directory.
+- After selecting a folder the Import Files button should light up.
+  - If the Import Files button does not light up, please ensure that the following three files are in the selected directory and are named exactly the same: `Assignment.csv`, `Driver.csv`, `Routes.csv`
+  - If the issue persists please turn off and then back on your machine.
+  - Please do not call customer service. Note that all purchases of Bus Network System:tm: software and services is final, no refunds will be granted under any circumstances.
+- Click Import Files
+- Your data will be imported into the Bus Network System:tm: database
+- The logger will output any errors found in the data.
+
+### Driver Information Query
+
+- From the menu bar select Windows -> Drivers
+- This will open the Drivers Window
+- From the dropdown menu select a driver you wish to query
+- The driver information will be displayed
+
+### Routes Information Query
+
+- From the menu bar select Windows -> Routes
+- This will open the Routes Window
+- From the dropdown menu select a route you wish to query
+- The route information will be displayed
+
+### Ticketing / Connection between cities
+
+- From the menu bar select Windows -> Ticketing
+- This will open the Ticketing Window
+- There are three dropdown menus - Departure, Destination and Departure Day
+- If only Departure City is selected, all routes that departure from that city are displayed
+- If only Destination City is selected, all routes that arrive at that city are displayed
+- If both Departure City and Destination City are selected but Departure Day is left blank, then all **direct** routes from departure to destination are displayed
+- If Departure City, Destination City and Departure Day are all selected then the fastest route from departure to destination that departs on that day is shown.
