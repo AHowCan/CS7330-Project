@@ -93,23 +93,61 @@ Query Options:
 
 Query Driver:
 This query requests the user to provide the first and last name of a driver, separated by a comma. It will print out all drivers that match the the first and last name and all details for each. If no drivers match the first and last name, it will return stating such.
+
 INPUT:FIRSTNAME,LASTNAME
-EXAMPLE:John,Doe
+EXAMPLE:
+>John,Doe
+    Driver: John Doe, ID:100A, Age:40, Home Town:Dallas, TX
+        Assignments:
+        - Route Number 1, Day of the week - M
+        - Route Number 1, Day of the week - U
+    Driver: John Doe, ID:101A, Age:20, Home Town:Houston, TX
+        Assignments:
+        No assignments
 
 Query City:
 This query requests the user to provide a name of a city. It will query the database for all routes that contains this city as a departure or destination. If no routes exist it will return stating such.
+
 INPUT:City1
-EXAMPLE:Dallas
+EXAMPLE:
+>Dallas
+Route ID: 1, Name: Route_1, Departing Dallas, TX at 7:0, and arriving at Houston, TX after 5 hours and 15 minutes on day of week code:0
+Route ID: 4B7, Name: Express, Departing Dallas, TX at 15:30, and arriving at Houston, TX after 4 hours and 30 minutes on day of week code:1
+
+Query Route:
+You can query all the information for a specific route by providing the route ID as well as the drivers assigned to the route.
+
+INPUT:route_number
+EXAMPLE OUTPUT:
+>1
+Route ID: 1, Name: Route_1, Departing Dallas, TX at 7:0, and arriving at Houston, TX after 5 hours and 15 minutes on day of week code:0
+	Driver ID:100A, Name: John Doe
+	Driver ID:100B, Name: Jack Doe
+	Driver ID:100C, Name: Mary Doe
 
 Query Connection:
 This query requests the user to provide two city names and will query the database for any routes that go from the first city given to the second city given. If no routes exist it will return stating such.
 INPUT:City1,City2
-EXAMPLE:Dallas,Houston
+EXAMPLE:
+>Dallas,Houston
+Route ID: 1, Name: Route_1, Departing Dallas, TX at 7:0, and arriving at Houston, TX after 5 hours and 15 minutes on day of week code:0
+	Driver ID:100A, Name: John Doe
+	Driver ID:100B, Name: Jack Doe
+	Driver ID:100C, Name: Mary Doe
+Route ID: 4B7, Name: Express, Departing Dallas, TX at 15:30, and arriving at Houston, TX after 4 hours and 30 minutes on day of week code:1
+	Driver ID:100A, Name: John Doe
+	Driver ID:100D, Name: Brad Doe
+	Driver ID:B933, Name: George Lam
+
 
 Query Path: 
 This query requests for two city names along with the single letter code for the day of departure. It begins by finding the shortest path based on traveling time for each route using Dijkstra's algorithm. It then begins to loop through each hop and tracks the time for traveling on a bus with time spent in a city waiting for the next route. If there exists multiple routes between two cities, it will evaluate them all and pick the quickest route based on time spent traveling on the bus. At the end of the route, if the total time is not more than the max time allowed for a path between two cities, it returns the route ID for each hop.
 INPUT:City1,City2,DayCode
-EXAMPLE:Dallas,Houston,M
+EXAMPLE:
+>Dallas,Waco,M
+The Route is from Dallas, TX to Houston, TX from Houston, TX to Waco, TX  
+	Route ID: 4B7 Dallas, TX - Houston, TX, leaving 15:30, arriving after 4 hours and 30 minutes
+	Route ID: 2 Houston, TX - Waco, TX, leaving 23:0, arriving after 1 hours and 0 minutes
 
 ## GUI implementation notes
 

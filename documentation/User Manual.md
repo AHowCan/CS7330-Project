@@ -28,7 +28,8 @@ You can query the info of a driver by providing the first and last name of the d
         - Route ID
         - Day of the week
 
-EXAMPLE INPUT:
+INPUT:FIRSTNAME,LASTNAME
+EXAMPLE OUTPUT:
 >John,Doe
     Driver: John Doe, ID:100A, Age:40, Home Town:Dallas, TX
         Assignments:
@@ -47,7 +48,8 @@ You can query a city by providing the name to get all the routes that depart or 
     - Destination city and state code
     - travel time
 
-EXAMPLE INPUT:
+INPUT:City1
+EXAMPLE OUTPUT:
 >Dallas
 Route ID: 1, Name: Route_1, Departing Dallas, TX at 7:0, and arriving at Houston, TX after 5 hours and 15 minutes on day of week code:0
 Route ID: 4B7, Name: Express, Departing Dallas, TX at 15:30, and arriving at Houston, TX after 4 hours and 30 minutes on day of week code:1
@@ -62,7 +64,8 @@ You can query all the information for a specific route by providing the route ID
     - travel time
     - Driver ID and name
 
-EXAMPLE INPUT:
+INPUT: Route_number
+EXAMPLE OUTPUT:
 >1
 Route ID: 1, Name: Route_1, Departing Dallas, TX at 7:0, and arriving at Houston, TX after 5 hours and 15 minutes on day of week code:0
 	Driver ID:100A, Name: John Doe
@@ -79,6 +82,7 @@ You can query for all the direct routes between two cities by giving the name of
     - Departure hour of the day and minute of the hour
     - The amount of hours to reach the destination and the remaining minutes
 
+INPUT:City1,City2
 EXAMPLE:
 >Dallas,Houston
 Route ID: 1, Name: Route_1, Departing Dallas, TX at 7:0, and arriving at Houston, TX after 5 hours and 15 minutes on day of week code:0
@@ -93,6 +97,7 @@ Route ID: 4B7, Name: Express, Departing Dallas, TX at 15:30, and arriving at Hou
 Query Path:
 You can query for a path that leads from one city to another. You will need to provide the departing city, destination city and the day of the week in code format, see below for the codes. They do not have to be directly connected cities. If they are not, it will return the routes needed to get to the final destination.
 
+INPUT:City1,City2,DayCode
 EXAMPLE:
 >Dallas,Waco,M
 The Route is from Dallas, TX to Houston, TX from Houston, TX to Waco, TX  
