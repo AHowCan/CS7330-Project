@@ -37,6 +37,23 @@ ROUTE_TYPE_VALID_DAYS = {'0': WEEKDAYS + WEEKENDS,
                          '2': WEEKENDS
                          }
 
+US_STATE_CODES = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS',
+                  'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'VI', 'WA', 'WV', 'WI', 'WY']
+
+# only these chars are allowed at all, illegal chars will be removed
+# stricter rules for different fields
+ALLOWED_CHARS = (
+    'abcdefghijklmnopqrstuvwxyz'
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    '0123456789'
+    ' *()[]<>,.?+-*_'
+)
+
+ROUTE_NUM_TOKENS = 11
+DRIVER_NUM_TOKENS = 6
+ASSIGNMENT_NUM_TOKENS = 3
+
+
 # tie breaker in case of exact time matches to avoid floating point inconsistencies
 # in case of exact time matches, assume no conflict
 TIME_EPSILON = 0.01
