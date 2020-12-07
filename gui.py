@@ -129,7 +129,11 @@ def update_driver_info_panel(sender, data):
     window_id = data
     driver_fullname = get_value(sender)
     driver_fullname = split_with_comma(driver_fullname)
-    driver_info = pformat(db_interface.get_driver_name(driver_fullname))
+    #driver_info = pformat(db_interface.get_driver_name(driver_fullname))
+    drivers = db_interface.get_driver_name(driver_fullname)
+    driver_info = ''
+    for driver in drivers:
+        driver_info += data_pipeline.str_driver_pretty(driver)
     set_value('DriverDetails##txt'+window_id, driver_info)
 
 

@@ -158,3 +158,39 @@ def sort_route_time(dict_list):
         sorted_dict[dictionary["_id"]] = departure_time
     sorted_dict = sorted(sorted_dict.items(), key=lambda item: item[1])
     return sorted_dict
+
+
+def str_driver_pretty(driver):
+    s = "Driver: %s %s, ID:%s, Age:%s, Home Town:%s, %s\n" % (
+        driver['first_name'], driver['last_name'], driver['_id'], driver['age'], driver['city'], driver['state'])
+    s += "\tAssignments:\n"
+    if 'assignments' in driver.keys():
+        assignments = driver['assignments']
+        for assignment in assignments:
+            s += ("\t\t- Route Number %s, Day of the week - %s\n" %
+                  (assignment['route_number'], assignment['day_of_week']))
+    else:
+        s += "\t\tNo assignments\n\n"
+    s += '\n'
+    return s
+
+
+def str_driver_brief(driver):
+    return ("\tDriver ID:%s, Name: %s %s" %
+            (driver['_id'], driver['first_name'], driver['last_name']))
+
+
+def str_route_pretty(route):
+    if 'name' not in route.keys():
+        route['name'] = "None"
+    return(
+        "Route ID: %s, Name: %s, Departing %s, %s at %s:%s, and arriving at %s, %s after %s hours and %s minutes on day of week code:%s" % (
+            route['_id'], route['name'], route['departure_city_name'], route[
+                'departure_city_code'], route['departure_time_hours'], route['departure_time_minutes'],
+            route['destination_city_name'], route['destination_city_code'], route['travel_time_hours'], route['travel_time_minutes'], route['route_type_code']))
+
+
+def str_route_brief(route):
+    return("\tRoute ID: %s %s, %s - %s, %s, leaving %s:%s, arriving after %s hours and %s minutes" % (
+        route['_id'], route['departure_city_name'], route['departure_city_code'], route['destination_city_name'], route['destination_city_code'],
+        route['departure_time_hours'], route['departure_time_minutes'], route['travel_time_hours'], route['travel_time_minutes']))

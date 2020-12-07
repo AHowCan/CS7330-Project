@@ -1,29 +1,5 @@
 # Developer Manual
 
-## Overview
-
-### config.py
-
-### connect.py
-
-### data_pipeline.py
-
-### db_interface.py
-
-### graph_controller.py
-
-### gui.py
-
-### input_parser.py
-
-### local_config.py
-
-### logger.py
-
-### main.py
-
-### user_interface.py
-
 ## Input parsing implementation notes:
 
 - The functions `parse_routes` `parse_driver` `parse_assignment` loop through all the lines that have been tokenized by the built in python module `csv.reader`
