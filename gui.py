@@ -276,10 +276,11 @@ def begin_gui():
     set_main_window_title(TITLE)
 
     create_import_data_window(None, None)
-    create_ticketing_window(None, None)
-    create_drivers_window(None, None)
-    create_routes_window(None, None)
+    #create_ticketing_window(None, None)
+    #create_drivers_window(None, None)
+    #create_routes_window(None, None)
     data_pipeline.build_graph()
+    show_logger()
 
     start_dearpygui(primary_window='PrimaryWindow')
 

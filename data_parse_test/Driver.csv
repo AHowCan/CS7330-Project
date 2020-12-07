@@ -1,0 +1,35 @@
+100A,this_should_end_up_capitalized,this_should_end_up_capitalized,40,Dallas,TX
+100B,bad age,Doe,not_a_number,Houston,TX
+100C,negative age,Doe,-5,Waco,TX
+100D,really old,Doe,1145,Dallas,TX
+200A,Bad state,Doe,50,Waco,ZZ
+A399,auto correct state,Doe,44,Dallas,tx
+B933,George,Lam,37,Houston,TX
+101A,John,Doe,20,Houston,TX
+1000,Long,Doe,100,Houston,TX
+1001,~,Doe,100,Houston,TX
+1002,`,Doe,100,Houston,TX
+1003,!,Doe,100,Houston,TX
+1004,@',Doe,100,Houston,TX
+1005,#,Doe,100,Houston,TX
+1006,$,Doe,100,Houston,TX
+1007,%,Doe,100,Houston,TX
+1008,??,Doe,101,Houston,TX
+1009,^,Doe,102,Houston,TX
+1010,&,Doe,103,Houston,TX
+1011,*,Doe,104,Houston,TX
+1012,(),Doe,105,Houston,TX
+1013,_-+,Doe,106,Houston,TX
+1014,\=,Doe,107,Houston,TX
+1015,[],Doe,108,Houston,TX
+1016,<>,Doe,109,Houston,TX
+1017,?,Doe,110,Houston,TX
+1018,/,Doe,111,Houston,TX
+1019,|,Doe,112,Houston,TX
+1020,.,Doe,113,Houston,TX
+1021,",",Doe,114,Houston,TX
+1022,\',Doe,115,Houston,TX
+1023,"""",Doe,116,Houston,TX
+1024,"*()[]<>,.?+-*_Should be valid",Doe,117,Houston,TX
+1025,                  Leading and trailing spaces                 ,Doe,118,Houston,TX
+"*()[]<>,.?+-*_",weird but vaild id,Doe,11,Houston,TX

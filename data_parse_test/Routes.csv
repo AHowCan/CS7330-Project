@@ -1,0 +1,10 @@
+1,Route_1,Dallas,TX,Houston,TX,0,7,72,5,15
+2,Route_2,Houston,TX,Waco,TX,0,23,73,1,0
+A13,,Waco,TX,Dallas,TX,24,20,0,2,45
+4B7,Express,Dallas,TX,Houston,TX,25,15,30,4,30
+3,Route_3,Houston,TX,Dallas,TX,0,66,0,48,0
+4,Long_Duration_No_Rest,Houston,TX,Dallas,TX,0,-1,0,71,0
+5,HWY_75,Houston,TX,Austin,TX,-1,7,0,5,15
+6,HWY_121,Houston,TX,Plano,TX,0,23,0,48,0
+15,HWY_50,Houston,TX,Richardson,TX,0,14,0,1,0
+16,Route_4,Richardson,TX,Waco,TX,0,17,0,1,30
