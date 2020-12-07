@@ -113,3 +113,9 @@ EXAMPLE:Dallas,Houston,M
 
 ## GUI implementation notes
 
+- It will help if you familiarize yourself with the `dearpygui` package before developing on the GUI
+- Most implementation details are straightforward once you are familiar with the design patterns common to `dearpygui`
+- For the following windows types - `ticketing_window`, `routes_window`, `drivers_window` - multiple windows can co-exist. These windows do not share data other than the database. 
+  - This is accomplished using the `window_id` that increments for each new window.
+  - All window components and variable names are then appended with the `window_id`. 
+  - This allows components of the same window to communicate with each other while maintaining separate state across different windows.
